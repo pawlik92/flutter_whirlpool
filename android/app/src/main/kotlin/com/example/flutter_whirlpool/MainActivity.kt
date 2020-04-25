@@ -1,4 +1,4 @@
-package com.example.flutter_whirlpool
+package com.pawlik92.flutter_whirlpool
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
