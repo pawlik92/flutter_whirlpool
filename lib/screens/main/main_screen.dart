@@ -33,42 +33,44 @@ class MainScreen extends StatelessWidget {
           child: Drawer(),
         ),
         drawerScrimColor: Colors.black.withAlpha(50),
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 25),
-              Padding(
-                padding: margin,
-                child: Text(
-                  'Smart Washing',
-                  style: TextStyle(
-                    fontSize: 28,
-                    color: CustomColors.headerColor,
-                    fontWeight: FontWeight.w800,
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 25),
+                Padding(
+                  padding: margin,
+                  child: Text(
+                    'Smart Washing',
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: CustomColors.headerColor,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 2),
-              Padding(
-                padding: margin,
-                child: Text(
-                  'Machine',
-                  style: TextStyle(
-                    fontSize: 26,
-                    color: CustomColors.headerColor,
-                    fontWeight: FontWeight.w400,
+                SizedBox(height: 2),
+                Padding(
+                  padding: margin,
+                  child: Text(
+                    'Machine',
+                    style: TextStyle(
+                      fontSize: 26,
+                      color: CustomColors.headerColor,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 70),
-              Padding(
-                padding: margin,
-                child: _ButtonList(),
-              ),
-              SizedBox(height: 60),
-              _ModesList(),
-            ],
+                SizedBox(height: 70),
+                Padding(
+                  padding: margin,
+                  child: _ButtonList(),
+                ),
+                SizedBox(height: 60),
+                _ModesList(),
+              ],
+            ),
           ),
         ),
       ),

@@ -11,7 +11,7 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(GLOBAL_EDGE_MARGIN_VALUE, 4, 18, 10),
+      margin: EdgeInsets.fromLTRB(GLOBAL_EDGE_MARGIN_VALUE, 6, 18, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
