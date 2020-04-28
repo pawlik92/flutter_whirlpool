@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/screens/main/mode_tile.dart';
 import 'package:flutter_whirlpool/screens/main/top_bar.dart';
+import 'package:flutter_whirlpool/screens/water_drawer/water_drawer.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
@@ -30,7 +31,9 @@ class MainScreen extends StatelessWidget {
             topRight: Radius.circular(45),
             bottomRight: Radius.circular(45),
           ),
-          child: Drawer(),
+          child: Drawer(
+            child: WaterDrawer(),
+          ),
         ),
         drawerScrimColor: Colors.black.withAlpha(50),
         body: SingleChildScrollView(
