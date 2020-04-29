@@ -10,6 +10,7 @@ class WaterSlider extends StatefulWidget {
   WaterSlider({
     @required this.minValue,
     @required this.maxValue,
+    this.initValue,
     this.onValueChanged,
     Key key,
   }) : super(key: key) {
@@ -20,6 +21,7 @@ class WaterSlider extends StatefulWidget {
 
   final double minValue;
   final double maxValue;
+  final double initValue;
   final ValueChangeCallback onValueChanged;
 
   @override
@@ -56,8 +58,9 @@ class _WaterSliderState extends State<WaterSlider> {
                       height: constraints.maxHeight,
                       min: widget.minValue,
                       max: widget.maxValue,
-                      topOffset: 50,
-                      bottomOffset: 50,
+                      topOffset: 40,
+                      bottomOffset: 58,
+                      initValue: widget.initValue,
                       onValueChanged: widget?.onValueChanged,
                     ),
                   ],
@@ -165,6 +168,7 @@ class _WaterSlide extends StatefulWidget {
     this.topOffset = 0.0,
     this.bottomOffset = 0.0,
     this.onValueChanged,
+    this.initValue,
     Key key,
   }) : super(key: key);
 
@@ -173,20 +177,45 @@ class _WaterSlide extends StatefulWidget {
   final double max;
   final double topOffset;
   final double bottomOffset;
+  final double initValue;
   final ValueChangeCallback onValueChanged;
 
   @override
   _WaterSlideState createState() => _WaterSlideState();
 }
 
-class _WaterSlideState extends State<_WaterSlide> {
+class _WaterSlideState extends State<_WaterSlide>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation _growAnimation;
+
   double _yOffset = 0;
 
   @override
   void initState() {
     super.initState();
 
-    _yOffset = _validateYOffset(_yOffset);
+    double animationEndValue = widget.initValue == null
+        ? _validateYOffset(_yOffset)
+        : _validateYOffset(_calculateYOffset(widget.initValue));
+
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _growAnimation = Tween<double>(begin: widget.height, end: animationEndValue)
+        .chain(CurveTween(curve: Curves.easeOutCirc))
+        .animate(_animationController)
+          ..addListener(() {
+            setState(() {
+              _yOffset = _growAnimation.value;
+            });
+          });
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -222,15 +251,27 @@ class _WaterSlideState extends State<_WaterSlide> {
   }
 
   void _calculateValue() {
-    double totalH = widget.height - widget.topOffset - widget.bottomOffset;
+    double workingH = widget.height - widget.topOffset - widget.bottomOffset;
     double currentH = widget.height - widget.bottomOffset - _yOffset;
 
-    double factor = totalH / (widget.max - widget.min);
+    double factor = workingH / (widget.max - widget.min);
     double value = (currentH + (widget.min * factor)) / factor;
 
     if (widget.onValueChanged != null) {
       widget.onValueChanged(value);
     }
+  }
+
+  double _calculateYOffset(double value) {
+    double workingH = widget.height - widget.topOffset - widget.bottomOffset;
+    double factor = workingH / (widget.max - widget.min);
+
+    double result = -((value * factor) -
+        widget.height +
+        widget.bottomOffset -
+        (widget.min * factor));
+
+    return result;
   }
 
   double _validateYOffset(double newYOffset) {
