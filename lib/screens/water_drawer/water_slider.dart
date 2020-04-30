@@ -28,36 +28,56 @@ class WaterSlider extends StatefulWidget {
   _WaterSliderState createState() => _WaterSliderState();
 }
 
-class _WaterSliderState extends State<WaterSlider> {
+class _WaterSliderState extends State<WaterSlider>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     BorderRadius borderRadius = BorderRadius.circular(50);
-
-    InnerShadowDecoration foregroundDecoration = InnerShadowDecoration(
-      colors: [
-        Color.lerp(CustomColors.pressedContainer, Colors.black, .12),
-        Colors.white
-      ],
-      borderRadius: borderRadius,
-    );
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Row(
           children: <Widget>[
             NeumorphicContainer(
-              width: 90,
+              width: 80,
               borderRadius: borderRadius,
               disableForegroundDecoration: true,
               padding: EdgeInsets.zero,
               child: Container(
-                decoration: foregroundDecoration,
+                decoration: InnerShadowDecoration(
+                  colors: [
+                    Color.lerp(
+                        CustomColors.pressedContainer, Colors.black, .12),
+                    Colors.white
+                  ],
+                  borderRadius: borderRadius,
+                ),
                 child: Stack(
                   children: [
                     _WaterSlide(
                       height: constraints.maxHeight,
                       min: widget.minValue,
                       max: widget.maxValue,
+                      controller: _animationController,
                       topOffset: 40,
                       bottomOffset: 58,
                       initValue: widget.initValue,
@@ -69,7 +89,8 @@ class _WaterSliderState extends State<WaterSlider> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 12),
-              child: _SliderRange(
+              child: _SliderLegend(
+                controller: _animationController.view,
                 min: widget.minValue,
                 max: widget.maxValue,
                 step: 50,
@@ -85,16 +106,56 @@ class _WaterSliderState extends State<WaterSlider> {
   }
 }
 
-class _SliderRange extends StatelessWidget {
-  const _SliderRange({
+class _SliderLegend extends StatelessWidget {
+  _SliderLegend({
     @required this.min,
     @required this.max,
     @required this.step,
+    @required this.controller,
     this.topOffset = 0.0,
     this.bottomOffset = 0.0,
     this.markNStep,
     Key key,
-  }) : super(key: key);
+  })  : shortLineWidth = Tween<double>(
+          begin: 0.0,
+          end: 25.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.180,
+              0.350,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        longLineWidth = Tween<double>(
+          begin: 0.0,
+          end: 80,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.180,
+              0.350,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        opacity = Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.110,
+              0.350,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
 
   final double min;
   final double max;
@@ -102,6 +163,10 @@ class _SliderRange extends StatelessWidget {
   final double topOffset;
   final double bottomOffset;
   final int markNStep;
+  final Animation<double> controller;
+  final Animation<double> shortLineWidth;
+  final Animation<double> longLineWidth;
+  final Animation<double> opacity;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +174,12 @@ class _SliderRange extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return Container(
           width: 120,
-          child: Stack(children: _generateRangeList(constraints.maxHeight)),
+          child: AnimatedBuilder(
+            builder: (BuildContext context, Widget child) {
+              return Stack(children: _generateRangeList(constraints.maxHeight));
+            },
+            animation: controller,
+          ),
         );
       },
     );
@@ -131,7 +201,7 @@ class _SliderRange extends StatelessWidget {
           left: 0,
           top: top,
           child: Container(
-            width: markStep ? 80 : 25,
+            width: markStep ? longLineWidth.value : shortLineWidth.value,
             height: 2,
             color: CustomColors.headerColor.withAlpha(30),
           ),
@@ -143,12 +213,15 @@ class _SliderRange extends StatelessWidget {
           Positioned(
             left: 80.0 + 8.0,
             top: top - 6,
-            child: Text(
-              (max - i * step).toStringAsFixed(0),
-              style: TextStyle(
-                color: CustomColors.headerColor.withAlpha(140),
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
+            child: Opacity(
+              opacity: opacity.value,
+              child: Text(
+                (max - i * step).toStringAsFixed(0),
+                style: TextStyle(
+                  color: CustomColors.headerColor.withAlpha(140),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
@@ -165,6 +238,7 @@ class _WaterSlide extends StatefulWidget {
     @required this.height,
     @required this.min,
     @required this.max,
+    @required this.controller,
     this.topOffset = 0.0,
     this.bottomOffset = 0.0,
     this.onValueChanged,
@@ -178,17 +252,15 @@ class _WaterSlide extends StatefulWidget {
   final double topOffset;
   final double bottomOffset;
   final double initValue;
+  final Animation<double> controller;
   final ValueChangeCallback onValueChanged;
 
   @override
   _WaterSlideState createState() => _WaterSlideState();
 }
 
-class _WaterSlideState extends State<_WaterSlide>
-    with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+class _WaterSlideState extends State<_WaterSlide> {
   Animation _growAnimation;
-
   double _yOffset = 0;
 
   @override
@@ -199,23 +271,21 @@ class _WaterSlideState extends State<_WaterSlide>
         ? _validateYOffset(_yOffset)
         : _validateYOffset(_calculateYOffset(widget.initValue));
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _growAnimation = Tween<double>(begin: widget.height, end: animationEndValue)
-        .chain(CurveTween(curve: Curves.easeOutCirc))
-        .animate(_animationController)
-          ..addListener(() {
-            setState(() {
-              _yOffset = _growAnimation.value;
-            });
+    _growAnimation = Tween<double>(
+      begin: widget.height,
+      end: animationEndValue,
+    ).animate(
+      CurvedAnimation(
+        parent: widget.controller,
+        curve: Interval(0.350, .750, curve: Curves.easeOutCubic),
+      ),
+    )..addListener(
+        () {
+          setState(() {
+            _yOffset = _growAnimation.value;
           });
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+        },
+      );
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/foundation.dart';
 
 class InnerShadowDecoration extends Decoration {
-  InnerShadowDecoration({
+  const InnerShadowDecoration({
     @required this.colors,
     this.shape = BoxShape.rectangle,
     this.borderRadius,
