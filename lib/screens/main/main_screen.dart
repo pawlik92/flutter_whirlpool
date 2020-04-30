@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/screens/main/mode_tile.dart';
 import 'package:flutter_whirlpool/screens/main/top_bar.dart';
+import 'package:flutter_whirlpool/screens/main/whirlpool/whirlpool.dart';
 import 'package:flutter_whirlpool/screens/water_drawer/water_drawer.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
@@ -38,40 +39,54 @@ class MainScreen extends StatelessWidget {
         drawerScrimColor: Colors.black.withAlpha(50),
         body: SingleChildScrollView(
           child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 25),
-                Padding(
-                  padding: margin,
-                  child: Text(
-                    'Smart Washing',
-                    style: TextStyle(
-                      fontSize: 28,
-                      color: CustomColors.headerColor,
-                      fontWeight: FontWeight.w800,
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 0,
+                  child: Transform.translate(
+                    offset: Offset(95, 105),
+                    child: Whirlpool(
+                      width: 380,
+                      height: 380,
                     ),
                   ),
                 ),
-                SizedBox(height: 2),
-                Padding(
-                  padding: margin,
-                  child: Text(
-                    'Machine',
-                    style: TextStyle(
-                      fontSize: 26,
-                      color: CustomColors.headerColor,
-                      fontWeight: FontWeight.w400,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 25),
+                    Padding(
+                      padding: margin,
+                      child: Text(
+                        'Smart Washing',
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: CustomColors.headerColor,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 2),
+                    Padding(
+                      padding: margin,
+                      child: Text(
+                        'Machine',
+                        style: TextStyle(
+                          fontSize: 26,
+                          color: CustomColors.headerColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 70),
+                    Padding(
+                      padding: margin,
+                      child: _ButtonList(),
+                    ),
+                    SizedBox(height: 60),
+                    _ModesList(),
+                  ],
                 ),
-                SizedBox(height: 70),
-                Padding(
-                  padding: margin,
-                  child: _ButtonList(),
-                ),
-                SizedBox(height: 60),
-                _ModesList(),
               ],
             ),
           ),
