@@ -9,6 +9,7 @@ class ModeTile extends StatelessWidget {
     Key key,
     this.margin,
     this.pressed,
+    this.onTap,
     @required this.name,
     @required this.indicatorColor,
     @required this.minutes,
@@ -19,10 +20,12 @@ class ModeTile extends StatelessWidget {
   final int minutes;
   final bool pressed;
   final Color indicatorColor;
+  final GestureTapCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
+      onTap: this.onTap,
       width: 120,
       margin: const EdgeInsets.only(
         left: GLOBAL_EDGE_MARGIN_VALUE,
