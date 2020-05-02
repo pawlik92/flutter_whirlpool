@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/decorators.dart';
+import 'package:flutter_whirlpool/view_models/timer_view_model.dart';
+import 'package:provider/provider.dart';
 
 class TimerPanel extends StatefulWidget {
   TimerPanel({Key key}) : super(key: key);
@@ -34,13 +36,17 @@ class _TimerPanelState extends State<TimerPanel> {
         borderRadius: radius,
       ),
       child: Center(
-        child: Text(
-          '29:57',
-          style: TextStyle(
-            color: CustomColors.textColor,
-            letterSpacing: 3,
-            fontSize: 22,
-          ),
+        child: Consumer<TimerViewModel>(
+          builder: (context, viewModel, _) {
+            return Text(
+              viewModel.remainigString,
+              style: TextStyle(
+                color: CustomColors.textColor,
+                letterSpacing: 3,
+                fontSize: 22,
+              ),
+            );
+          },
         ),
       ),
     );

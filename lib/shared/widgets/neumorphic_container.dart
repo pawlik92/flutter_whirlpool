@@ -6,6 +6,7 @@ import 'package:flutter_whirlpool/shared/decorators.dart';
 
 class NeumorphicContainer extends StatelessWidget {
   const NeumorphicContainer({
+    Key key,
     this.child,
     this.pressed,
     this.width,
@@ -17,7 +18,7 @@ class NeumorphicContainer extends StatelessWidget {
     this.decoration,
     this.foregroundDecoration,
     this.disableForegroundDecoration,
-    Key key,
+    this.disabled,
   }) : super(key: key);
 
   final bool pressed;
@@ -31,6 +32,7 @@ class NeumorphicContainer extends StatelessWidget {
   final Decoration foregroundDecoration;
   final EdgeInsetsGeometry padding;
   final bool disableForegroundDecoration;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -49,27 +51,30 @@ class NeumorphicContainer extends StatelessWidget {
       borderRadius: borderRadius ?? deafultRadius,
     );
 
-    return AnimatedContainer(
-      width: width,
-      height: height,
-      margin: margin,
-      duration: const Duration(milliseconds: 80),
-      padding: padding ?? const EdgeInsets.all(8.0),
-      foregroundDecoration: disableForegroundDecoration != true
-          ? foregroundDecoration ?? defaultForegroundDecoration
-          : null,
-      decoration: decoration ??
-          BoxDecoration(
-            borderRadius: borderRadius ?? deafultRadius,
-            color: pressed == true
-                ? CustomColors.pressedContainer
-                : color ?? CustomColors.containerPrimary,
-            boxShadow: pressed == true ? null : NEUMORPHIC_DEFAULT_SHADOW,
-          ),
-      child: ClipRRect(
-        clipBehavior: Clip.antiAlias,
-        borderRadius: borderRadius ?? deafultRadius,
-        child: child,
+    return Opacity(
+      opacity: disabled == true ? .5 : 1,
+      child: AnimatedContainer(
+        width: width,
+        height: height,
+        margin: margin,
+        duration: const Duration(milliseconds: 150),
+        padding: padding ?? const EdgeInsets.all(8.0),
+        foregroundDecoration: disableForegroundDecoration != true
+            ? foregroundDecoration ?? defaultForegroundDecoration
+            : null,
+        decoration: decoration ??
+            BoxDecoration(
+              borderRadius: borderRadius ?? deafultRadius,
+              color: pressed == true
+                  ? CustomColors.pressedContainer
+                  : color ?? CustomColors.containerPrimary,
+              boxShadow: pressed == true ? null : NEUMORPHIC_DEFAULT_SHADOW,
+            ),
+        child: ClipRRect(
+          clipBehavior: Clip.antiAlias,
+          borderRadius: borderRadius ?? deafultRadius,
+          child: child,
+        ),
       ),
     );
   }

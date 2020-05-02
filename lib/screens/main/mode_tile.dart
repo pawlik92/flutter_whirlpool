@@ -7,12 +7,13 @@ import 'package:flutter_whirlpool/shared/widgets.dart';
 class ModeTile extends StatelessWidget {
   const ModeTile({
     Key key,
-    this.margin,
-    this.pressed,
-    this.onTap,
     @required this.name,
     @required this.indicatorColor,
     @required this.minutes,
+    this.margin,
+    this.pressed,
+    this.onTap,
+    this.disabled,
   }) : super(key: key);
 
   final EdgeInsetsGeometry margin;
@@ -21,12 +22,14 @@ class ModeTile extends StatelessWidget {
   final bool pressed;
   final Color indicatorColor;
   final GestureTapCallback onTap;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
       onTap: this.onTap,
       width: 120,
+      disabled: disabled,
       margin: const EdgeInsets.only(
         left: GLOBAL_EDGE_MARGIN_VALUE,
         top: 10,

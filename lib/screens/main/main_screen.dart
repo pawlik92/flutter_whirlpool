@@ -47,7 +47,7 @@ class MainScreen extends StatelessWidget {
                 Positioned(
                   right: 0,
                   child: Transform.translate(
-                    offset: Offset(95, 105),
+                    offset: Offset(110, 105),
                     child: Whirlpool(
                       width: 380,
                       height: 380,
@@ -84,7 +84,7 @@ class MainScreen extends StatelessWidget {
                     SizedBox(height: 70),
                     Padding(
                       padding: margin,
-                      child: _ButtonList(),
+                      child: _FunctionButtonsList(),
                     ),
                     SizedBox(height: 60),
                     _ModesList(),
@@ -99,8 +99,8 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-class _ButtonList extends StatelessWidget {
-  const _ButtonList({Key key}) : super(key: key);
+class _FunctionButtonsList extends StatelessWidget {
+  const _FunctionButtonsList({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,8 @@ class _ButtonList extends StatelessWidget {
             Padding(
               padding: margin,
               child: _Indicator(
-                color: viewModel.selectedMode?.color,
+                color: viewModel?.selectedMode?.color,
+                blink: viewModel.modeStatus == ModeStatus.running,
               ),
             ),
             NeumorphicIconButton(
@@ -129,13 +130,18 @@ class _ButtonList extends StatelessWidget {
                 Icons.opacity,
                 color: CustomColors.textColor,
               ),
+              onTap: () => Scaffold.of(context).openDrawer(),
             ),
             NeumorphicIconButton(
               margin: margin,
               icon: Icon(
-                Icons.pause,
+                viewModel.modeStatus == ModeStatus.running
+                    ? Icons.pause
+                    : Icons.play_arrow,
                 color: CustomColors.textColor,
               ),
+              pressed: viewModel.modeStatus == ModeStatus.running,
+              onTap: () => viewModel.runOrPause(),
             )
           ],
         );
@@ -144,10 +150,65 @@ class _ButtonList extends StatelessWidget {
   }
 }
 
-class _Indicator extends StatelessWidget {
-  const _Indicator({Key key, @required this.color}) : super(key: key);
+class _Indicator extends StatefulWidget {
+  const _Indicator({
+    Key key,
+    this.color,
+    this.blink,
+  }) : super(key: key);
 
   final Color color;
+  final bool blink;
+
+  @override
+  _IndicatorState createState() => _IndicatorState();
+}
+
+class _IndicatorState extends State<_Indicator>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _colorTween;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 700),
+      vsync: this,
+    );
+
+    setupAnimation();
+  }
+
+  @override
+  void didUpdateWidget(_Indicator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.color != oldWidget.color || widget.blink != oldWidget.blink) {
+      setupAnimation();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void setupAnimation() {
+    Color startColor = CustomColors.textColor.withAlpha(200);
+    Color endColor = CustomColors.textColor.withAlpha(200);
+    if (widget.color != null) {
+      startColor = widget.color;
+    }
+
+    _controller.reset();
+    _colorTween =
+        ColorTween(begin: startColor, end: endColor).animate(_controller);
+    if (widget.blink == true) {
+      _controller.repeat(reverse: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,12 +232,17 @@ class _Indicator extends StatelessWidget {
           ),
         ],
       ),
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: color,
-        ),
+      child: AnimatedBuilder(
+        animation: _colorTween,
+        builder: (context, child) {
+          return Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: _colorTween.value,
+            ),
+          );
+        },
       ),
     );
   }
@@ -187,27 +253,27 @@ class _ModesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MainViewModel>(
-      builder: (context, viewModel, _) {
-        return Container(
-          height: 205,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: MainScreen.margin,
-                child: Text(
-                  'Mode',
-                  style: TextStyle(
-                    fontSize: 23,
-                    color: CustomColors.headerColor,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+    return Container(
+      height: 205,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: MainScreen.margin,
+            child: Text(
+              'Mode',
+              style: TextStyle(
+                fontSize: 23,
+                color: CustomColors.headerColor,
+                fontWeight: FontWeight.w700,
               ),
-              SizedBox(height: 14),
-              Flexible(
-                child: ListView.builder(
+            ),
+          ),
+          SizedBox(height: 14),
+          Flexible(
+            child: Consumer<MainViewModel>(
+              builder: (context, viewModel, _) {
+                return ListView.builder(
                     itemBuilder: (context, index) {
                       if (index > viewModel.nodes.length - 1) {
                         return null;
@@ -215,19 +281,20 @@ class _ModesList extends StatelessWidget {
                       ModeItemModel item = viewModel.nodes[index];
 
                       return ModeTile(
-                        pressed: viewModel.selectedMode == item,
+                        pressed: viewModel?.selectedMode == item,
                         indicatorColor: item.color,
                         name: item.name,
                         minutes: item.minutes,
-                        onTap: () => viewModel.selectedMode = item,
+                        disabled: viewModel.modeStatus == ModeStatus.running,
+                        onTap: () => viewModel.selectMode(item),
                       );
                     },
-                    scrollDirection: Axis.horizontal),
-              ),
-            ],
+                    scrollDirection: Axis.horizontal);
+              },
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
