@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/models/mode_item_model.dart';
 import 'package:flutter_whirlpool/screens/main/mode_tile.dart';
 import 'package:flutter_whirlpool/screens/main/top_bar.dart';
-import 'package:flutter_whirlpool/screens/main/whirlpool/whirlpool.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/washing_machine_case.dart';
 import 'package:flutter_whirlpool/screens/water_drawer/water_drawer.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
@@ -47,8 +47,8 @@ class MainScreen extends StatelessWidget {
                 Positioned(
                   right: 0,
                   child: Transform.translate(
-                    offset: Offset(110, 105),
-                    child: Whirlpool(
+                    offset: Offset(100, 120),
+                    child: WashingMachineCase(
                       width: 380,
                       height: 380,
                     ),
@@ -196,8 +196,8 @@ class _IndicatorState extends State<_Indicator>
   }
 
   void setupAnimation() {
-    Color startColor = CustomColors.textColor.withAlpha(200);
-    Color endColor = CustomColors.textColor.withAlpha(200);
+    Color startColor = CustomColors.textColor.withAlpha(150);
+    Color endColor = CustomColors.textColor.withAlpha(150);
     if (widget.color != null) {
       startColor = widget.color;
     }

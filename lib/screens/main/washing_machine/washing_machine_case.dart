@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/drum/washing_machine_drum.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/washing_machine_controller.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 
-class Whirlpool extends StatelessWidget {
-  const Whirlpool({
+class WashingMachineCase extends StatefulWidget {
+  const WashingMachineCase({
     Key key,
     this.width,
     this.height,
@@ -12,11 +14,18 @@ class Whirlpool extends StatelessWidget {
   final double height;
 
   @override
+  _WashingMachineCaseState createState() => _WashingMachineCaseState();
+}
+
+class _WashingMachineCaseState extends State<WashingMachineCase> {
+  final WashingMachineController _controller = WashingMachineController();
+
+  @override
   Widget build(BuildContext context) {
     const circularBorder = const BorderRadius.all(Radius.circular(200));
     return Container(
-      width: width,
-      height: height,
+      width: widget.width,
+      height: widget.height,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment(0.31, 0.07),
@@ -40,16 +49,16 @@ class Whirlpool extends StatelessWidget {
       ),
       child: Center(
         child: Container(
-          width: width - 30,
-          height: height - 30,
+          width: widget.width - 30,
+          height: widget.height - 30,
           decoration: BoxDecoration(
             color: CustomColors.primaryColor,
             borderRadius: circularBorder,
           ),
           child: Center(
             child: Container(
-              width: width - 30 - 70,
-              height: height - 30 - 70,
+              width: widget.width - 30 - 70,
+              height: widget.height - 30 - 70,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment(0.36, 0.07),
@@ -65,11 +74,10 @@ class Whirlpool extends StatelessWidget {
               ),
               child: Center(
                 child: Container(
-                  width: width - 30 - 70 - 28,
-                  height: height - 30 - 70 - 28,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: circularBorder,
+                  width: widget.width - 30 - 70 - 28,
+                  height: widget.height - 30 - 70 - 28,
+                  child: ClipOval(
+                    child: WashingMachineDrum(_controller),
                   ),
                 ),
               ),
