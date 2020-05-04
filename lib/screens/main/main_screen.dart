@@ -123,6 +123,7 @@ class _FunctionButtonsList extends StatelessWidget {
                 Icons.power_settings_new,
                 color: CustomColors.textColor,
               ),
+              onTap: () => viewModel.stop(),
             ),
             NeumorphicIconButton(
               margin: margin,

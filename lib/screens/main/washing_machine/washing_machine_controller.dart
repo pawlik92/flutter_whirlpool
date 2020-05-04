@@ -1,23 +1,71 @@
-import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic.dart';
 
 typedef PaintCallback();
 
 class WashingMachineController {
-  WashingMachineController() {
-    Timer.periodic(Duration(milliseconds: 40), (timer) {
-      drumAngle += 4;
-      if (drumAngle >= 360) {
-        drumAngle = 0;
-      }
+  WashingMachineController({
+    @required this.ballsCount,
+  }) : physic = DrumPhysic(ballsCount: ballsCount);
 
-      if (onNeedPaint != null) {
-        onNeedPaint();
-      }
-    });
+  final int ballsCount;
+  final DrumPhysic physic;
+
+  double get drumAngle => physic?.whirlpoolCoreBody?.getAngle() ?? 0.0;
+  double get radius => _radius;
+  PaintCallback onNeedPaint;
+  bool devMode = false;
+
+  double _radius;
+  bool _initalized = false;
+
+  initialize({double radius}) {
+    assert(_initalized != true);
+    _initalized = true;
+
+    _radius = radius;
+    physic.initialize(radius);
   }
 
-  double drumAngle = 0.0;
-  PaintCallback onNeedPaint;
+  initializeBalls() {
+    physic.initializeBalls();
+  }
 
-  void dispose() {}
+  hasBalls() {
+    return physic.balls.length > 0;
+  }
+
+  start() {
+    assert(_initalized == true);
+
+    SchedulerBinding.instance.scheduleFrameCallback(step);
+    redraw();
+  }
+
+  step(Duration timeStamp) {
+    assert(_initalized == true);
+
+    physic.step();
+    SchedulerBinding.instance.scheduleFrameCallback(step, rescheduling: true);
+    redraw();
+  }
+
+  setAngularVelocity(
+    double value, {
+    double seconds = 0.0,
+    bool stopAtEnd = false,
+  }) {
+    if (_initalized != true) {
+      return;
+    }
+
+    physic.setAngularVelocity(value, seconds: seconds, stopAtEnd: stopAtEnd);
+  }
+
+  redraw() {
+    if (onNeedPaint != null) {
+      onNeedPaint();
+    }
+  }
 }

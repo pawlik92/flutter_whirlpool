@@ -1,0 +1,213 @@
+import 'dart:math';
+import 'package:box2d_flame/box2d.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:async' as dartAsync;
+
+import 'package:flutter/rendering.dart';
+
+class DrumPhysic {
+  static const double GRAVITY = 9.8;
+  static const double TIME_STEP = 1 / 60;
+  static const double WHIRLPOOL_CIRCLE_SEGMENTS = 360;
+  static const double BALL_RADIUS = 14;
+  static const double PPM = 100;
+
+  static const Color BALL_COLOR_BLUE = Color.fromARGB(255, 62, 36, 251);
+  static const Color BALL_COLOR_AQUA = Color.fromARGB(255, 39, 230, 227);
+  static const Color BALL_COLOR_ORANGE = Color.fromARGB(255, 253, 112, 33);
+  static const Color BALL_COLOR_PINK = Color.fromARGB(255, 253, 66, 193);
+
+  DrumPhysic({
+    @required this.ballsCount,
+  }) : this.world = World.withGravity(Vector2(0, GRAVITY)) {
+    assert(ballsCount > 0);
+  }
+
+  final World world;
+  final int ballsCount;
+  final _random = Random();
+
+  Offset get origin {
+    return Offset(radius, radius);
+  }
+
+  double get radius => _radius;
+
+  double _radius;
+  Body whirlpoolCoreBody;
+  Body whirlpoolBaseBody;
+  List<Body> balls = [];
+  Joint whirlpoolJoint;
+  RevoluteJointDef revoluteJointDef = RevoluteJointDef();
+
+  // Velocity force variables
+  double _endVelocity = 0.0;
+  double _velocityStepValue = 0.0;
+  bool _velocityStopAtEnd = false;
+
+  void initialize(double radiusValue) {
+    _radius = radiusValue;
+    _createWhirlpool();
+  }
+
+  void initializeBalls() {
+    if (balls.length > 0) {
+      return;
+    }
+
+    dartAsync.Timer.periodic(Duration(milliseconds: 100), (timer) {
+      int offsetX =
+          _randomBetween(-origin.dx.toInt() + 30, origin.dx.toInt() - 30);
+      _createBall(offsetX, _randomColor());
+      if (balls.length >= ballsCount) {
+        timer.cancel();
+        return;
+      }
+
+      offsetX = _randomBetween(-origin.dx.toInt() + 30, origin.dx.toInt() - 30);
+      _createBall(offsetX, _randomColor());
+      if (balls.length >= ballsCount) {
+        timer.cancel();
+        return;
+      }
+    });
+  }
+
+  void step() {
+    world.stepDt(TIME_STEP, 10, 10);
+    _velocityStep();
+  }
+
+  void setAngularVelocity(
+    double value, {
+    double seconds = 0,
+    bool stopAtEnd = false,
+  }) {
+    _endVelocity = value;
+    _velocityStopAtEnd = stopAtEnd;
+    if (seconds == 0) {
+      whirlpoolCoreBody.angularVelocity =
+          (whirlpoolCoreBody.angularVelocity + value);
+    } else {
+      _velocityStepValue =
+          (value - whirlpoolCoreBody.angularVelocity) / (seconds / TIME_STEP);
+    }
+  }
+
+  void _velocityStep() {
+    double newVelocity = 0;
+    bool endReached = false;
+    if (_velocityStepValue > 0 &&
+        whirlpoolCoreBody.angularVelocity >= _endVelocity) {
+      newVelocity = _endVelocity;
+      endReached = true;
+    } else if (_velocityStepValue < 0 &&
+        whirlpoolCoreBody.angularVelocity <= _endVelocity) {
+      newVelocity = _endVelocity;
+      endReached = true;
+    } else {
+      newVelocity = whirlpoolCoreBody.angularVelocity + _velocityStepValue;
+    }
+
+    if (endReached == true && _velocityStopAtEnd == true) {
+      newVelocity = 0.0;
+      _velocityStepValue = 0.0;
+      _endVelocity = 0.0;
+    }
+    whirlpoolCoreBody.angularVelocity = newVelocity;
+  }
+
+  Color _randomColor() {
+    List<Color> colors = [
+      BALL_COLOR_BLUE,
+      BALL_COLOR_AQUA,
+      BALL_COLOR_ORANGE,
+      BALL_COLOR_PINK
+    ];
+    int random = _randomBetween(0, colors.length);
+
+    return colors[random];
+  }
+
+  void _createWhirlpool() {
+    _createWhirlpoolBase();
+    _createWhirlpoolCore();
+    _jointWhirlpool();
+  }
+
+  void _createWhirlpoolBase() {
+    final polygonShape = PolygonShape();
+    polygonShape.setAsBoxXY(2 / PPM, 2 / PPM);
+
+    final bodyDef = BodyDef()
+      ..type = BodyType.STATIC
+      ..position = Vector2(origin.dx / PPM, origin.dy / PPM);
+
+    whirlpoolBaseBody = world.createBody(bodyDef);
+
+    final fixtureDef = FixtureDef()
+      ..shape = polygonShape
+      ..isSensor = true;
+    whirlpoolBaseBody.createFixtureFromFixtureDef(fixtureDef);
+  }
+
+  void _createWhirlpoolCore() {
+    final chainShape = ChainShape();
+    final bodyDef = BodyDef()
+      ..type = BodyType.KINEMATIC
+      ..fixedRotation = true
+      ..position = Vector2(origin.dx / PPM, origin.dy / PPM);
+
+    List<Vector2> vertices = [];
+    for (int i = 0; i < WHIRLPOOL_CIRCLE_SEGMENTS; i++) {
+      double angle = ((pi * 2) / WHIRLPOOL_CIRCLE_SEGMENTS) * i;
+      vertices.add(Vector2(
+        radius * cos(angle) / PPM,
+        radius * sin(angle) / PPM,
+      ));
+    }
+
+    chainShape.createLoop(vertices, vertices.length);
+    whirlpoolCoreBody = world.createBody(bodyDef);
+
+    final fixtureDef = FixtureDef()
+      ..shape = chainShape
+      ..density = 10;
+
+    whirlpoolCoreBody.createFixtureFromFixtureDef(fixtureDef);
+  }
+
+  void _jointWhirlpool() {
+    revoluteJointDef.initialize(
+        whirlpoolBaseBody, whirlpoolCoreBody, whirlpoolBaseBody.worldCenter);
+    revoluteJointDef.collideConnected = false;
+
+    revoluteJointDef.enableMotor = false;
+    whirlpoolJoint = world.createJoint(revoluteJointDef);
+  }
+
+  void _createBall(int offsetX, Color color) {
+    final bouncingRectangle = CircleShape()..radius = BALL_RADIUS / PPM;
+
+    final activeFixtureDef = FixtureDef();
+    activeFixtureDef.density = 4;
+    activeFixtureDef.friction = 1;
+    activeFixtureDef.restitution = .2;
+    activeFixtureDef.shape = bouncingRectangle;
+
+    final activeBodyDef = BodyDef();
+    activeBodyDef.position = Vector2(
+      ((origin.dx + offsetX) / PPM),
+      (origin.dy - (radius / 2) - 10) / PPM,
+    );
+    activeBodyDef.type = BodyType.DYNAMIC;
+    activeBodyDef.bullet = true;
+    Body boxBody = world.createBody(activeBodyDef);
+    boxBody.createFixtureFromFixtureDef(activeFixtureDef);
+    boxBody.userData = color;
+
+    balls.add(boxBody);
+  }
+
+  int _randomBetween(int min, int max) => min + _random.nextInt(max - min);
+}

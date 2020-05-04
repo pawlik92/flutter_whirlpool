@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/screens/main/timer_panel.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/washing_machine_controller.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
+import 'package:flutter_whirlpool/view_models/service_locator.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({Key key}) : super(key: key);
@@ -19,11 +21,13 @@ class TopBar extends StatelessWidget {
         children: <Widget>[
           NeumorphicIconButton(
             icon: Icon(
-              Icons.arrow_back_ios,
-              size: 18,
+              Icons.code,
               color: CustomColors.textColor,
             ),
-            onTap: () => Scaffold.of(context).openDrawer(),
+            onTap: () {
+              var controller = ServiceLocator.get<WashingMachineController>();
+              controller.devMode = !controller.devMode;
+            },
           ),
           TimerPanel()
         ],

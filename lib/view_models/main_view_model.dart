@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_whirlpool/models/mode_item_model.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/washing_machine_controller.dart';
 import 'package:flutter_whirlpool/view_models/service_locator.dart';
 import 'package:flutter_whirlpool/view_models/timer_view_model.dart';
 
@@ -18,7 +21,10 @@ class MainViewModel with ChangeNotifier {
 
   List<ModeItemModel> nodes = const [
     ModeItemModel(
-        name: 'Standard', minutes: 32, color: Color.fromRGBO(61, 111, 252, 1)),
+      name: 'Standard',
+      minutes: 32,
+      color: Color.fromRGBO(61, 111, 252, 1),
+    ),
     ModeItemModel(
       name: 'Gentle',
       minutes: 24,
@@ -50,17 +56,45 @@ class MainViewModel with ChangeNotifier {
     }
 
     var timerVM = ServiceLocator.get<TimerViewModel>();
+    var washingMachineController =
+        ServiceLocator.get<WashingMachineController>();
 
     if (modeStatus == ModeStatus.running) {
       _modeStatus = ModeStatus.paused;
       timerVM.pause();
+      washingMachineController.setAngularVelocity(0, seconds: 3);
     } else if (modeStatus == ModeStatus.paused) {
       _modeStatus = ModeStatus.running;
+      washingMachineController.setAngularVelocity(-6, seconds: 6);
       timerVM.resume();
     } else if (modeStatus == ModeStatus.notStarted) {
       _modeStatus = ModeStatus.running;
-      timerVM.start(Duration(minutes: selectedMode.minutes));
+
+      if (!washingMachineController.hasBalls()) {
+        washingMachineController.initializeBalls();
+      }
+
+      Timer.periodic(
+          Duration(seconds: !washingMachineController.hasBalls() ? 2 : 0),
+          (timer) {
+        timer.cancel();
+
+        timerVM.start(Duration(minutes: selectedMode.minutes));
+        washingMachineController.setAngularVelocity(-6, seconds: 10);
+      });
     }
+
+    notifyListeners();
+  }
+
+  stop() {
+    var washingMachineController =
+        ServiceLocator.get<WashingMachineController>();
+    var timerVM = ServiceLocator.get<TimerViewModel>();
+
+    washingMachineController.setAngularVelocity(0, seconds: 3);
+    _modeStatus = ModeStatus.notStarted;
+    timerVM.reset(callNotifyListeners: true);
 
     notifyListeners();
   }
@@ -78,5 +112,9 @@ class MainViewModel with ChangeNotifier {
     var timerVM = ServiceLocator.get<TimerViewModel>();
     timerVM.reset(callNotifyListeners: true);
     notifyListeners();
+
+    int sign = Random().nextBool() ? 1 : -1;
+    ServiceLocator.get<WashingMachineController>()
+        .setAngularVelocity(3.0 * sign, stopAtEnd: true, seconds: 1);
   }
 }

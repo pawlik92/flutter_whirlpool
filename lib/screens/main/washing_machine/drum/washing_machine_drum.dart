@@ -1,7 +1,12 @@
 import 'dart:math';
+import 'dart:ui';
 
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic.dart';
+import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic_renderer.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/washing_machine_controller.dart';
+import 'package:flutter_whirlpool/shared/utils.dart';
 
 class WashingMachineDrum extends LeafRenderObjectWidget {
   WashingMachineDrum(this.controller, {Key key}) : super(key: key);
@@ -20,29 +25,26 @@ class WashingMachineDrum extends LeafRenderObjectWidget {
       renderObject.controller = controller;
     }
   }
-
-  @override
-  didUnmountRenderObject(covariant _WhirlpoolRenderObject renderObject) {
-    renderObject?.controller?.dispose();
-  }
 }
 
 class _WhirlpoolRenderObject extends RenderBox {
-  WashingMachineController _controller;
+  DrumPhysicRenderer _physicRenderer = DrumPhysicRenderer(ppm: DrumPhysic.PPM);
 
   WashingMachineController get controller => _controller;
+
+  WashingMachineController _controller;
 
   set controller(WashingMachineController value) {
     if (_controller == value) {
       return;
-    } else {
-      _controller?.dispose();
     }
 
     _controller = value;
     _controller.onNeedPaint = markNeedsPaint;
     markNeedsPaint();
     markNeedsLayout();
+
+    _controller.start();
   }
 
   @override
@@ -54,6 +56,46 @@ class _WhirlpoolRenderObject extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     _drawDrum(context, offset);
+    _drawWhirlpool(context, offset);
+  }
+
+  _drawWhirlpool(PaintingContext context, Offset offset) {
+    _physicRenderer.renderBody(
+        context.canvas, controller.physic.whirlpoolCoreBody);
+
+    if (controller.devMode != true) {
+      context.pushLayer(
+          ColorFilterLayer(
+            colorFilter: ColorFilter.matrix(
+              [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 8, -200],
+            ),
+          ), (PaintingContext context2, Offset offset2) {
+        context2.pushLayer(
+            ImageFilterLayer(
+                imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8)),
+            (PaintingContext context3, Offset offset3) {
+          _drawBalls(context3, offset3);
+        }, offset2);
+      }, offset);
+    } else {
+      _drawBalls(context, offset);
+    }
+  }
+
+  _drawBalls(PaintingContext context, Offset offset) async {
+    Canvas canvas = context.canvas;
+    var rect = Rect.fromLTWH(
+        controller.physic.origin.dx - controller.physic.radius,
+        controller.physic.origin.dy - controller.physic.radius,
+        controller.physic.radius * 2,
+        controller.physic.radius * 2);
+    canvas.save();
+    canvas.clipPath(Path()..addOval(rect));
+
+    controller.physic.balls.forEach((body) {
+      _physicRenderer.renderBody(canvas, body);
+    });
+    canvas.restore();
   }
 
   _drawDrum(PaintingContext context, Offset offset) {
@@ -74,7 +116,7 @@ class _WhirlpoolRenderObject extends RenderBox {
     canvas.save();
     canvas.translate(
         context.estimatedBounds.center.dx, context.estimatedBounds.center.dy);
-    canvas.rotate(_degToRad(controller.drumAngle));
+    canvas.rotate(controller.drumAngle);
     canvas.scale(1.05);
     canvas.translate(
         -context.estimatedBounds.center.dx, -context.estimatedBounds.center.dy);
@@ -127,7 +169,7 @@ class _WhirlpoolRenderObject extends RenderBox {
     for (int i = 0; i < segments; i++) {
       Matrix4 transformMatrix = Matrix4.identity()
         ..translate(center.dx, center.dy)
-        ..multiply(Matrix4.rotationZ(_degToRad(i * stepRotationAngle)))
+        ..multiply(Matrix4.rotationZ(Utils.degToRad(i * stepRotationAngle)))
         ..translate(-center.dx, -center.dy);
 
       result.extendWithPath(basePath, Offset.zero,
@@ -163,13 +205,9 @@ class _WhirlpoolRenderObject extends RenderBox {
   }
 
   Offset _findPoint(Offset center, double r, double angleDegree) {
-    double x = center.dx + r * cos(_degToRad(angleDegree));
-    double y = center.dy + r * sin(_degToRad(angleDegree));
+    double x = center.dx + r * cos(Utils.degToRad(angleDegree));
+    double y = center.dy + r * sin(Utils.degToRad(angleDegree));
 
     return Offset(x, y);
-  }
-
-  double _degToRad(double angle) {
-    return pi * angle / 180.0;
   }
 }
