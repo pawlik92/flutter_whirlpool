@@ -74,12 +74,16 @@ class MainViewModel with ChangeNotifier {
         washingMachineController.initializeBalls();
       }
 
+      timerVM.start(Duration(minutes: selectedMode.minutes));
+
       Timer.periodic(
           Duration(seconds: !washingMachineController.hasBalls() ? 2 : 0),
           (timer) {
         timer.cancel();
+        if (modeStatus != ModeStatus.running) {
+          return;
+        }
 
-        timerVM.start(Duration(minutes: selectedMode.minutes));
         washingMachineController.setAngularVelocity(-6, seconds: 10);
       });
     }

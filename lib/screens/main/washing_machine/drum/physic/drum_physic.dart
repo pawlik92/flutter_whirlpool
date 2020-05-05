@@ -8,8 +8,8 @@ import 'package:flutter/rendering.dart';
 class DrumPhysic {
   static const double GRAVITY = 9.8;
   static const double TIME_STEP = 1 / 60;
-  static const double WHIRLPOOL_CIRCLE_SEGMENTS = 360;
-  static const double BALL_RADIUS = 14;
+  static const double WHIRLPOOL_CIRCLE_SEGMENTS = 28;
+  static const double BALL_RADIUS = 16;
   static const double PPM = 100;
 
   static const Color BALL_COLOR_BLUE = Color.fromARGB(255, 62, 36, 251);
@@ -74,7 +74,7 @@ class DrumPhysic {
   }
 
   void step() {
-    world.stepDt(TIME_STEP, 10, 10);
+    world.stepDt(TIME_STEP, 5, 5);
     _velocityStep();
   }
 

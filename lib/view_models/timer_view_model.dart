@@ -33,6 +33,9 @@ class TimerViewModel with ChangeNotifier {
   }
 
   start(Duration duration) {
+    if (duration == null) {
+      return;
+    }
     reset(callNotifyListeners: true);
 
     _countdownTimer = CountdownTimer(duration, Duration(seconds: 1));

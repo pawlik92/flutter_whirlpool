@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_whirlpool/screens/main/main_screen.dart';
+import 'package:flutter_whirlpool/view_models/dev_view_model.dart';
 import 'package:flutter_whirlpool/view_models/main_view_model.dart';
 import 'package:flutter_whirlpool/view_models/service_locator.dart';
 import 'package:flutter_whirlpool/view_models/timer_view_model.dart';
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+            create: (_) => ServiceLocator.get<DevViewModel>()),
         ChangeNotifierProvider(
             create: (_) => ServiceLocator.get<MainViewModel>()),
         ChangeNotifierProvider(

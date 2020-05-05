@@ -57,26 +57,29 @@ class _WhirlpoolRenderObject extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     _drawDrum(context, offset);
     _drawWhirlpool(context, offset);
+
+    // debug draw whirlpool circle body
+    // _physicRenderer.renderBody(
+    //     context.canvas, controller.physic.whirlpoolCoreBody);
   }
 
   _drawWhirlpool(PaintingContext context, Offset offset) {
-    _physicRenderer.renderBody(
-        context.canvas, controller.physic.whirlpoolCoreBody);
-
     if (controller.devMode != true) {
       context.pushLayer(
           ColorFilterLayer(
             colorFilter: ColorFilter.matrix(
-              [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 8, -200],
+              [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 20, -800],
             ),
-          ), (PaintingContext context2, Offset offset2) {
-        context2.pushLayer(
-            ImageFilterLayer(
-                imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8)),
-            (PaintingContext context3, Offset offset3) {
-          _drawBalls(context3, offset3);
-        }, offset2);
-      }, offset);
+          ),
+          (PaintingContext context2, Offset offset2) => context2.pushLayer(
+                ImageFilterLayer(
+                  imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                ),
+                (PaintingContext context3, Offset offset3) =>
+                    _drawBalls(context3, offset3),
+                offset2,
+              ),
+          offset);
     } else {
       _drawBalls(context, offset);
     }
