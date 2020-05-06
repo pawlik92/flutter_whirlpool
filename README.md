@@ -1,4 +1,4 @@
-# Flutter SMART Washing Machine
+# Flutter UI Challenge- SMART Washing Machine
 
 ![Flutter smart washing machine app](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/main.png)
 
