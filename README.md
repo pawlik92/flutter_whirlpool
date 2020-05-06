@@ -24,6 +24,6 @@ The balls simulation is conducted using the Box2D physic engine.
 
 ## Tips
 
-While the application is running, you can turn off "metaball effect" by clicking the button in the upper right corner.
+While the application is running, you can turn off "metaball effect" by clicking the button in the upper left corner.
 
 ![How to disable metaball](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/disable_metaball.png)
