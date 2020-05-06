@@ -20,7 +20,7 @@ Many thanks to **Dimest**, for allowing me to write an application based on his 
 
 To build application, you need to install **Flutter (1.17+)**. You can find help here: https://flutter.dev/docs/get-started/install
 
-The ball simulation is conducted using the Box2D physic engine.
+The balls simulation is conducted using the Box2D physic engine.
 
 ## Tips
 
