@@ -1,16 +1,29 @@
-# flutter_whirlpool
+# Flutter SMART Washing Machine
 
-A new Flutter project.
+![Flutter smart washing machine app](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/main.png)
 
-## Getting Started
+## About project
 
-This project is a starting point for a Flutter application.
+The application was written based on this great UI concept: https://dribbble.com/shots/11018635-Washing-machine
 
-A few resources to get you started if this is your first Flutter project:
+Many thanks to **Dimest**, for allowing me to write an application based on his concept. I encourage you to check out the rest of his great arts: https://dribbble.com/Dimest
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## App in action
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Washing machine GIF 1](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool1.gif)
+![Washing machine GIF 2](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool2.gif)
+![Washing machine GIF 3](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool3.gif)
+![Washing machine GIF 4](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool4.gif)
+
+
+## Dev
+
+To build application, you need to install **Flutter (1.17+)**. You can find help here: https://flutter.dev/docs/get-started/install
+
+The ball simulation is conducted using the Box2D physic engine.
+
+## Tips
+
+While the application is running, you can turn off "metaball effect" by clicking the button in the upper right corner.
+
+![How to disable metaball](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/disable_metaball.png)
