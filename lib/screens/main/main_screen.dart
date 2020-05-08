@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_whirlpool/core/lang/app_localizations.dart';
 import 'package:flutter_whirlpool/models/mode_item_model.dart';
 import 'package:flutter_whirlpool/screens/main/mode_tile.dart';
 import 'package:flutter_whirlpool/screens/main/top_bar.dart';
@@ -8,18 +9,22 @@ import 'package:flutter_whirlpool/screens/water_drawer/water_drawer.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
+import 'package:flutter_whirlpool/view_models/language_view_model.dart';
 import 'package:flutter_whirlpool/view_models/main_view_model.dart';
+import 'package:flutter_whirlpool/view_models/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
-  static const margin = EdgeInsets.only(
-    left: GLOBAL_EDGE_MARGIN_VALUE,
+  static const margin = EdgeInsetsDirectional.only(
+    start: GLOBAL_EDGE_MARGIN_VALUE,
   );
 
   const MainScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool _isRtl = ServiceLocator.get<LanguageViewModel>()?.isRTL ?? false;
+
     return Container(
       color: CustomColors.primaryColor,
       child: Scaffold(
@@ -32,8 +37,10 @@ class MainScreen extends StatelessWidget {
         ),
         drawer: ClipRRect(
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(45),
-            bottomRight: Radius.circular(45),
+            topRight: _isRtl ? Radius.circular(0) : Radius.circular(45),
+            bottomRight: _isRtl ? Radius.circular(0) : Radius.circular(45),
+            bottomLeft: _isRtl ? Radius.circular(45) : Radius.circular(0),
+            topLeft: _isRtl ? Radius.circular(45) : Radius.circular(0),
           ),
           child: Drawer(
             child: WaterDrawer(),
@@ -44,10 +51,10 @@ class MainScreen extends StatelessWidget {
           child: Container(
             child: Stack(
               children: [
-                Positioned(
-                  right: 0,
+                PositionedDirectional(
+                  end: 0,
                   child: Transform.translate(
-                    offset: Offset(100, 120),
+                    offset: Offset(_isRtl ? -100 : 100, 120),
                     child: WashingMachineCase(
                       width: 380,
                       height: 380,
@@ -61,9 +68,9 @@ class MainScreen extends StatelessWidget {
                     Padding(
                       padding: margin,
                       child: Text(
-                        'Smart Washing',
+                        AppLocalizations.of(context).translate("home_title"),
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: _isRtl ? 22 : 28,
                           color: CustomColors.headerColor,
                           fontWeight: FontWeight.w800,
                         ),
@@ -73,9 +80,10 @@ class MainScreen extends StatelessWidget {
                     Padding(
                       padding: margin,
                       child: Text(
-                        'Machine',
+                        AppLocalizations.of(context)
+                            .translate("home_sub_title"),
                         style: TextStyle(
-                          fontSize: 26,
+                          fontSize: _isRtl ? 20 : 26,
                           color: CustomColors.headerColor,
                           fontWeight: FontWeight.w400,
                         ),
@@ -262,7 +270,7 @@ class _ModesList extends StatelessWidget {
           Padding(
             padding: MainScreen.margin,
             child: Text(
-              'Mode',
+              AppLocalizations.of(context).translate("mode"),
               style: TextStyle(
                 fontSize: 23,
                 color: CustomColors.headerColor,
@@ -284,7 +292,7 @@ class _ModesList extends StatelessWidget {
                       return ModeTile(
                         pressed: viewModel?.selectedMode == item,
                         indicatorColor: item.color,
-                        name: item.name,
+                        name: AppLocalizations.of(context).translate(item.name),
                         minutes: item.minutes,
                         disabled: viewModel.modeStatus == ModeStatus.running,
                         onTap: () => viewModel.selectMode(item),
