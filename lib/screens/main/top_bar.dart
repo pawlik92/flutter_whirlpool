@@ -5,6 +5,7 @@ import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
 import 'package:flutter_whirlpool/view_models/dev_view_model.dart';
+import 'package:flutter_whirlpool/view_models/language_view_model.dart';
 import 'package:provider/provider.dart';
 
 class TopBar extends StatelessWidget {
@@ -13,10 +14,9 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(
+      margin: EdgeInsetsDirectional.fromSTEB(
           GLOBAL_EDGE_MARGIN_VALUE, DRAWER_BUTTON_MARGIN_TOP, 18, 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Consumer<DevViewModel>(builder: (context, viewModel, _) {
@@ -31,6 +31,23 @@ class TopBar extends StatelessWidget {
               },
             );
           }),
+          SizedBox(
+            width: 25,
+          ),
+          Consumer<LanguageViewModel>(builder: (context, viewModel, _) {
+            return NeumorphicIconButton(
+              icon: Icon(
+                Icons.translate,
+                color: CustomColors.textColor,
+              ),
+              onTap: () {
+                viewModel.appLocal = viewModel.appLocal;
+              },
+            );
+          }),
+          Expanded(
+            child: Container(),
+          ),
           TimerPanel()
         ],
       ),

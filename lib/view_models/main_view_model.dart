@@ -21,17 +21,17 @@ class MainViewModel with ChangeNotifier {
 
   List<ModeItemModel> nodes = const [
     ModeItemModel(
-      name: 'Standard',
+      name: 'standard',
       minutes: 32,
       color: Color.fromRGBO(61, 111, 252, 1),
     ),
     ModeItemModel(
-      name: 'Gentle',
+      name: 'gentle',
       minutes: 24,
       color: Color.fromRGBO(50, 197, 253, 1),
     ),
     ModeItemModel(
-      name: 'Fast',
+      name: 'fast',
       minutes: 12,
       color: Color.fromRGBO(253, 133, 53, 1),
     ),

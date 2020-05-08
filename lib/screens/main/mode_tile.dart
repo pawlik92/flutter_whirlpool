@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_whirlpool/core/lang/app_localizations.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
@@ -30,8 +31,8 @@ class ModeTile extends StatelessWidget {
       onTap: this.onTap,
       width: 120,
       disabled: disabled,
-      margin: const EdgeInsets.only(
-        left: GLOBAL_EDGE_MARGIN_VALUE,
+      margin: const EdgeInsetsDirectional.only(
+        start: GLOBAL_EDGE_MARGIN_VALUE,
         top: 10,
         bottom: 10,
       ),
@@ -62,7 +63,7 @@ class ModeTile extends StatelessWidget {
               height: 6,
             ),
             Text(
-              '$minutes minutes',
+              '$minutes ${AppLocalizations.of(context).translate("minutes")}',
               style: TextStyle(
                 fontSize: 13,
                 color: CustomColors.headerColor.withAlpha(120),

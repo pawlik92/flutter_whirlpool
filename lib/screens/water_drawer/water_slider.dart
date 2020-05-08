@@ -88,7 +88,9 @@ class _WaterSliderState extends State<WaterSlider>
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 12),
+              padding: const EdgeInsetsDirectional.only(
+                start: 12,
+              ),
               child: _SliderLegend(
                 controller: _animationController.view,
                 min: widget.minValue,
@@ -197,8 +199,8 @@ class _SliderLegend extends StatelessWidget {
       double top = topOffset + i * bottomMargin;
 
       result.add(
-        Positioned(
-          left: 0,
+        PositionedDirectional(
+          start: 0,
           top: top,
           child: Container(
             width: markStep ? longLineWidth.value : shortLineWidth.value,
@@ -210,8 +212,8 @@ class _SliderLegend extends StatelessWidget {
 
       if (markStep) {
         result.add(
-          Positioned(
-            left: 80.0 + 8.0,
+          PositionedDirectional(
+            start: 80.0 + 8.0,
             top: top - 6,
             child: Opacity(
               opacity: opacity.value,
@@ -290,9 +292,9 @@ class _WaterSlideState extends State<_WaterSlide> {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
+    return PositionedDirectional(
       bottom: -_yOffset,
-      left: 0,
+      start: 0,
       child: GestureDetector(
         onVerticalDragUpdate: _onDragUpdate,
         child: Stack(
