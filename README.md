@@ -15,6 +15,11 @@ Many thanks to **Dimest**, for allowing me to write an application based on his 
 ![Washing machine GIF 3](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/3.gif)
 ![Washing machine GIF 4](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/4.gif)
 
+## Follow me
+
+If you want to be informed about new projects, follow me on [Instagram](https://www.instagram.com/pwlkx) or [Twitter](https://twitter.com/t_pawlik)
+
+
 ## Dev
 
 To build application, you need to install **Flutter (1.17+)**. You can find help here: https://flutter.dev/docs/get-started/install
