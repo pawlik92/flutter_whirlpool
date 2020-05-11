@@ -10,20 +10,19 @@ Many thanks to **Dimest**, for allowing me to write an application based on his 
 
 ## App in action
 
-![Washing machine GIF 1](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool1.gif)
-![Washing machine GIF 2](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool2.gif)
-![Washing machine GIF 3](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool3.gif)
-![Washing machine GIF 4](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/flutter_whirlpool4.gif)
-
+![Washing machine GIF 1](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/1.gif)
+![Washing machine GIF 2](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/2.gif)
+![Washing machine GIF 3](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/3.gif)
+![Washing machine GIF 4](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/4.gif)
 
 ## Dev
 
 To build application, you need to install **Flutter (1.17+)**. You can find help here: https://flutter.dev/docs/get-started/install
 
-The balls simulation is conducted using the Box2D physic engine.
+The balls simulation is conducted using the **Box2D** physic engine.
 
 ## Tips
 
-While the application is running, you can turn off "metaball effect" by clicking the button in the upper left corner.
+In settings, you can switch to dark mode and turn off "metaball effect".
 
-![How to disable metaball](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/disable_metaball.png)
+![How to disable metaball](https://github.com/pawlik92/flutter_whirlpool/raw/master/doc/img/settings.png)
