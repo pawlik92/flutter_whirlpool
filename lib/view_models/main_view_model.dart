@@ -62,10 +62,10 @@ class MainViewModel with ChangeNotifier {
     if (modeStatus == ModeStatus.running) {
       _modeStatus = ModeStatus.paused;
       timerVM.pause();
-      washingMachineController.setAngularVelocity(0, seconds: 3);
+      washingMachineController.setAngularVelocity(0, seconds: 1);
     } else if (modeStatus == ModeStatus.paused) {
       _modeStatus = ModeStatus.running;
-      washingMachineController.setAngularVelocity(-6, seconds: 6);
+      washingMachineController.setAngularVelocity(-15, seconds: 7);
       timerVM.resume();
     } else if (modeStatus == ModeStatus.notStarted) {
       _modeStatus = ModeStatus.running;
@@ -84,7 +84,7 @@ class MainViewModel with ChangeNotifier {
           return;
         }
 
-        washingMachineController.setAngularVelocity(-6, seconds: 10);
+        washingMachineController.setAngularVelocity(-15, seconds: 7);
       });
     }
 
@@ -119,6 +119,6 @@ class MainViewModel with ChangeNotifier {
 
     int sign = Random().nextBool() ? 1 : -1;
     ServiceLocator.get<WashingMachineController>()
-        .setAngularVelocity(3.0 * sign, stopAtEnd: true, seconds: 1);
+        .setAngularVelocity(9.0 * sign, stopAtEnd: true, seconds: 0.6);
   }
 }

@@ -69,12 +69,12 @@ class _WhirlpoolRenderObject extends RenderBox {
       context.pushLayer(
           ColorFilterLayer(
             colorFilter: ColorFilter.matrix(
-              [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 20, -800],
+              [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 20, -1200],
             ),
           ),
           (PaintingContext context2, Offset offset2) => context2.pushLayer(
                 ImageFilterLayer(
-                  imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  imageFilter: ImageFilter.blur(sigmaX: 13, sigmaY: 13),
                 ),
                 (PaintingContext context3, Offset offset3) =>
                     _drawBalls(context3, offset3),

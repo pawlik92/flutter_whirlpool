@@ -32,8 +32,8 @@ class ModeTile extends StatelessWidget {
       disabled: disabled,
       margin: const EdgeInsets.only(
         left: GLOBAL_EDGE_MARGIN_VALUE,
-        top: 10,
-        bottom: 10,
+        top: 15,
+        bottom: 15,
       ),
       pressed: pressed,
       child: Padding(

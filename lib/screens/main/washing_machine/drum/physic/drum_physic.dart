@@ -55,16 +55,9 @@ class DrumPhysic {
       return;
     }
 
-    dartAsync.Timer.periodic(Duration(milliseconds: 100), (timer) {
+    dartAsync.Timer.periodic(Duration(milliseconds: 70), (timer) {
       int offsetX =
           _randomBetween(-origin.dx.toInt() + 30, origin.dx.toInt() - 30);
-      _createBall(offsetX, _randomColor());
-      if (balls.length >= ballsCount) {
-        timer.cancel();
-        return;
-      }
-
-      offsetX = _randomBetween(-origin.dx.toInt() + 30, origin.dx.toInt() - 30);
       _createBall(offsetX, _randomColor());
       if (balls.length >= ballsCount) {
         timer.cancel();

@@ -273,7 +273,7 @@ class _ModesList extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 14),
+          SizedBox(height: 4),
           Flexible(
             child: Consumer<MainViewModel>(
               builder: (context, viewModel, _) {
