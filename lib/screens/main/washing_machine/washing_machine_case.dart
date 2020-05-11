@@ -45,13 +45,13 @@ class _WashingMachineCaseState extends State<WashingMachineCase> {
           colors: CustomColors.drumRing1Colors,
           stops: [0, 0.4, 1],
         ),
-        border: Border.all(color: CustomColors.drumBorder, width: 2.5),
+        border: Border.all(color: CustomColors.drumBorder, width: 2),
         borderRadius: circularBorder,
         boxShadow: [
           BoxShadow(
-            blurRadius: 9,
-            offset: Offset(6, 6),
-            color: Colors.black.withAlpha(10),
+            blurRadius: 12,
+            offset: Offset(-8, -8),
+            color: Colors.white.withAlpha(12),
           ),
         ],
       ),
