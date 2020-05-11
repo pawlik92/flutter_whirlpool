@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/screens/main/timer_panel.dart';
+import 'package:flutter_whirlpool/screens/settings/settings_bottom_sheet.dart';
 import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/consts.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
-import 'package:flutter_whirlpool/view_models/dev_view_model.dart';
+import 'package:flutter_whirlpool/view_models/settings_view_model.dart';
 import 'package:provider/provider.dart';
 
 class TopBar extends StatelessWidget {
@@ -19,18 +20,20 @@ class TopBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Consumer<DevViewModel>(builder: (context, viewModel, _) {
-            return NeumorphicIconButton(
-              pressed: viewModel.devMode,
-              icon: Icon(
-                viewModel.devMode ? Icons.blur_off : Icons.blur_on,
-                color: CustomColors.textColor,
-              ),
-              onTap: () {
-                viewModel.devMode = !viewModel.devMode;
-              },
-            );
-          }),
+          NeumorphicIconButton(
+            icon: Icon(
+              Icons.settings,
+              color: CustomColors.icon,
+            ),
+            onTap: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    return SettingsBottomSheet();
+                  });
+            },
+          ),
           TimerPanel()
         ],
       ),

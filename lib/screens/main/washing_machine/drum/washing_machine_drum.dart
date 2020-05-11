@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic_renderer.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/washing_machine_controller.dart';
+import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/utils.dart';
 
 class WashingMachineDrum extends LeafRenderObjectWidget {
@@ -105,11 +106,12 @@ class _WhirlpoolRenderObject extends RenderBox {
     Canvas canvas = context.canvas;
     canvas.drawRect(
       context.estimatedBounds,
-      Paint()..color = Color.fromARGB(255, 233, 244, 249),
+      Paint()..color = CustomColors.drumBackground,
     );
 
-    Path washingMachine = _createDrumPath(3, 10, context.estimatedBounds);
-    Path washingMachineBackground = _createDrumPath(
+    Path washingMachineRibForeground =
+        _createDrumPath(3, 10, context.estimatedBounds);
+    Path washingMachineRibBackground = _createDrumPath(
       3,
       10,
       context.estimatedBounds,
@@ -125,32 +127,29 @@ class _WhirlpoolRenderObject extends RenderBox {
         -context.estimatedBounds.center.dx, -context.estimatedBounds.center.dy);
 
     canvas.drawPath(
-        washingMachineBackground,
+        washingMachineRibBackground,
         Paint()
-          ..color = Color.fromARGB(255, 228, 238, 247)
-          ..style = PaintingStyle.fill
-          ..strokeWidth = 2);
+          ..color = CustomColors.drumRibBackground
+          ..style = PaintingStyle.fill);
 
     canvas.drawPath(
-        washingMachine,
+        washingMachineRibForeground,
         Paint()
-          ..color = Color.fromARGB(255, 236, 244, 250)
-          ..style = PaintingStyle.fill
-          ..strokeWidth = 2);
+          ..color = CustomColors.drumRibForeground
+          ..style = PaintingStyle.fill);
 
     canvas.restore();
 
     canvas.drawRect(
       context.estimatedBounds,
       Paint()
-        ..color = Color.fromARGB(255, 233, 244, 249)
-        ..shader = RadialGradient(colors: [
-          Color.fromARGB(0, 255, 255, 255),
-          Color.fromARGB(120, 202, 213, 225),
-        ], stops: [
-          0.85,
-          1,
-        ]).createShader(context.estimatedBounds),
+        ..shader = RadialGradient(
+          colors: CustomColors.drumInnerShadowColors,
+          stops: [
+            0.85,
+            1,
+          ],
+        ).createShader(context.estimatedBounds),
     );
   }
 

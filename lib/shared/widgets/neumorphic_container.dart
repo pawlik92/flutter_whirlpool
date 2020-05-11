@@ -15,6 +15,7 @@ class NeumorphicContainer extends StatelessWidget {
     this.padding,
     this.color,
     this.borderRadius,
+    this.border,
     this.decoration,
     this.foregroundDecoration,
     this.disableForegroundDecoration,
@@ -28,6 +29,7 @@ class NeumorphicContainer extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Color color;
   final BorderRadius borderRadius;
+  final BoxBorder border;
   final Decoration decoration;
   final Decoration foregroundDecoration;
   final EdgeInsetsGeometry padding;
@@ -41,12 +43,12 @@ class NeumorphicContainer extends StatelessWidget {
     InnerShadowDecoration defaultForegroundDecoration = InnerShadowDecoration(
       colors: pressed == true
           ? [
-              Color.lerp(CustomColors.pressedContainer, Colors.black, .12),
-              Colors.white
+              CustomColors.containerInnerShadowTop,
+              CustomColors.containerInnerShadowBottom
             ]
           : [
-              CustomColors.containerPrimary,
-              CustomColors.containerPrimary,
+              CustomColors.container,
+              CustomColors.container,
             ],
       borderRadius: borderRadius ?? deafultRadius,
     );
@@ -65,10 +67,24 @@ class NeumorphicContainer extends StatelessWidget {
         decoration: decoration ??
             BoxDecoration(
               borderRadius: borderRadius ?? deafultRadius,
+              border: border,
               color: pressed == true
-                  ? CustomColors.pressedContainer
-                  : color ?? CustomColors.containerPrimary,
-              boxShadow: pressed == true ? null : NEUMORPHIC_DEFAULT_SHADOW,
+                  ? CustomColors.containerPressed
+                  : color ?? CustomColors.container,
+              boxShadow: pressed == true
+                  ? null
+                  : [
+                      BoxShadow(
+                        blurRadius: 10,
+                        offset: const Offset(-6, -6),
+                        color: CustomColors.containerShadowTop,
+                      ),
+                      BoxShadow(
+                        blurRadius: 10,
+                        offset: const Offset(6, 6),
+                        color: CustomColors.containerShadowBottom,
+                      ),
+                    ],
             ),
         child: ClipRRect(
           clipBehavior: Clip.antiAlias,

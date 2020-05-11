@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class DevViewModel with ChangeNotifier {
+class SettingsViewModel with ChangeNotifier {
   bool get devMode => _devMode;
   set devMode(bool value) {
     if (_devMode == value) {

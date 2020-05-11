@@ -25,11 +25,10 @@ class WaterDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   NeumorphicIconButton(
-                    color: Colors.white,
                     icon: Icon(
                       Icons.arrow_back_ios,
                       size: 18,
-                      color: CustomColors.textColor,
+                      color: CustomColors.icon,
                     ),
                     onTap: () => Navigator.pop(context),
                   ),
@@ -37,8 +36,8 @@ class WaterDrawer extends StatelessWidget {
                   Text(
                     'Choose water',
                     style: TextStyle(
-                      fontSize: 28,
-                      color: CustomColors.headerColor,
+                      fontSize: 26,
+                      color: CustomColors.primaryTextColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -46,8 +45,8 @@ class WaterDrawer extends StatelessWidget {
                   Text(
                     'Please save choice',
                     style: TextStyle(
-                      fontSize: 16,
-                      color: CustomColors.headerColor,
+                      fontSize: 14,
+                      color: CustomColors.primaryTextColor,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -66,7 +65,7 @@ class WaterDrawer extends StatelessWidget {
                     text: TextSpan(
                       text: 'Current  ',
                       style: TextStyle(
-                        color: CustomColors.headerColor,
+                        color: CustomColors.primaryTextColor,
                         fontWeight: FontWeight.w300,
                         fontSize: 18,
                       ),

@@ -31,21 +31,21 @@ class _WashingMachineCaseState extends State<WashingMachineCase> {
   @override
   Widget build(BuildContext context) {
     const circularBorder = const BorderRadius.all(Radius.circular(200));
+    const ring1Offset = 35;
+    const ring2Offset = 70;
+    const ring3Offset = 28;
+
     return Container(
       width: widget.width,
       height: widget.height,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment(0.31, 0.07),
+          begin: Alignment(0.3, 0.07),
           end: Alignment(0.35, 1),
-          colors: [
-            Color.fromRGBO(248, 250, 251, 1),
-            Color.fromRGBO(243, 246, 248, 1),
-            Color.fromRGBO(221, 228, 236, 1),
-          ],
+          colors: CustomColors.drumRing1Colors,
           stops: [0, 0.4, 1],
         ),
-        border: Border.all(color: Color.fromRGBO(223, 229, 232, 1), width: 2.5),
+        border: Border.all(color: CustomColors.drumBorder, width: 2.5),
         borderRadius: circularBorder,
         boxShadow: [
           BoxShadow(
@@ -57,33 +57,34 @@ class _WashingMachineCaseState extends State<WashingMachineCase> {
       ),
       child: Center(
         child: Container(
-          width: widget.width - 30,
-          height: widget.height - 30,
+          width: widget.width - ring1Offset,
+          height: widget.height - ring1Offset,
           decoration: BoxDecoration(
-            color: CustomColors.primaryColor,
+            gradient: LinearGradient(
+              begin: Alignment(0.3, 0.07),
+              end: Alignment(0.35, 1),
+              colors: CustomColors.drumRing2Colors,
+              stops: [0, 0.6, 1],
+            ),
             borderRadius: circularBorder,
           ),
           child: Center(
             child: Container(
-              width: widget.width - 30 - 70,
-              height: widget.height - 30 - 70,
+              width: widget.width - ring1Offset - ring2Offset,
+              height: widget.height - ring1Offset - ring2Offset,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment(0.36, 0.07),
                   end: Alignment(0.5, 0.6),
-                  colors: [
-                    Color.fromRGBO(205, 216, 227, 1),
-                    Color.fromRGBO(207, 218, 228, 1),
-                    Color.fromRGBO(243, 245, 247, 1),
-                  ],
-                  stops: [0, 0.26, 1],
+                  colors: CustomColors.drumRing3Colors,
+                  stops: [0, 0.25, 1],
                 ),
                 borderRadius: circularBorder,
               ),
               child: Center(
                 child: Container(
-                  width: widget.width - 30 - 70 - 28,
-                  height: widget.height - 30 - 70 - 28,
+                  width: widget.width - ring1Offset - ring2Offset - ring3Offset,
+                  height: widget.height - ring1Offset - ring2Offset - ring3Offset,
                   child: ClipOval(
                     child: WashingMachineDrum(_controller),
                   ),

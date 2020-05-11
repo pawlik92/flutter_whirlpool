@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic.dart';
-import 'package:flutter_whirlpool/view_models/dev_view_model.dart';
 import 'package:flutter_whirlpool/view_models/service_locator.dart';
+import 'package:flutter_whirlpool/view_models/settings_view_model.dart';
 
 typedef PaintCallback();
 
@@ -16,7 +16,7 @@ class WashingMachineController {
 
   double get drumAngle => physic?.whirlpoolCoreBody?.getAngle() ?? 0.0;
   double get radius => _radius;
-  bool get devMode => ServiceLocator.get<DevViewModel>()?.devMode;
+  bool get devMode => ServiceLocator.get<SettingsViewModel>()?.devMode;
   PaintCallback onNeedPaint;
 
   double _radius;

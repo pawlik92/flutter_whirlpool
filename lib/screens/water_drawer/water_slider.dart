@@ -58,16 +58,16 @@ class _WaterSliderState extends State<WaterSlider>
         return Row(
           children: <Widget>[
             NeumorphicContainer(
-              width: 80,
+              width: 85,
+              color: CustomColors.containerPressed,
               borderRadius: borderRadius,
               disableForegroundDecoration: true,
               padding: EdgeInsets.zero,
               child: Container(
                 decoration: InnerShadowDecoration(
                   colors: [
-                    Color.lerp(
-                        CustomColors.pressedContainer, Colors.black, .12),
-                    Colors.white
+                    CustomColors.containerInnerShadowTop,
+                    CustomColors.containerInnerShadowBottom,
                   ],
                   borderRadius: borderRadius,
                 ),
@@ -203,7 +203,7 @@ class _SliderLegend extends StatelessWidget {
           child: Container(
             width: markStep ? longLineWidth.value : shortLineWidth.value,
             height: 2,
-            color: CustomColors.headerColor.withAlpha(30),
+            color: CustomColors.primaryTextColor.withAlpha(30),
           ),
         ),
       );
@@ -218,7 +218,7 @@ class _SliderLegend extends StatelessWidget {
               child: Text(
                 (max - i * step).toStringAsFixed(0),
                 style: TextStyle(
-                  color: CustomColors.headerColor.withAlpha(140),
+                  color: CustomColors.primaryTextColor.withAlpha(140),
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                 ),
