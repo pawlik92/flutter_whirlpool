@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic.dart';
 import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_physic_renderer.dart';
@@ -34,6 +35,7 @@ class _WhirlpoolRenderObject extends RenderBox {
   WashingMachineController get controller => _controller;
 
   WashingMachineController _controller;
+  double _lastTimeStamp = 0.0;
 
   set controller(WashingMachineController value) {
     if (_controller == value) {
@@ -45,7 +47,7 @@ class _WhirlpoolRenderObject extends RenderBox {
     markNeedsPaint();
     markNeedsLayout();
 
-    _controller.start();
+    SchedulerBinding.instance.scheduleFrameCallback(frame);
   }
 
   @override
@@ -62,6 +64,24 @@ class _WhirlpoolRenderObject extends RenderBox {
     // debug draw whirlpool circle body
     // _physicRenderer.renderBody(
     //     context.canvas, controller.physic.whirlpoolCoreBody);
+  }
+
+  frame(Duration timeStamp) {
+    final double t =
+        timeStamp.inMicroseconds / Duration.microsecondsPerMillisecond / 1000.0;
+
+    if (_lastTimeStamp == 0) {
+      _lastTimeStamp = t;
+      SchedulerBinding.instance.scheduleFrameCallback(frame);
+      return;
+    }
+
+    double elapsed = (t - _lastTimeStamp).clamp(0.0, 1.0);
+    _lastTimeStamp = t;
+
+    controller?.step(elapsed);
+    controller?.redraw();
+    SchedulerBinding.instance.scheduleFrameCallback(frame);
   }
 
   _drawWhirlpool(PaintingContext context, Offset offset) {

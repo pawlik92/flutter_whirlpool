@@ -38,19 +38,12 @@ class WashingMachineController {
     return physic.balls.length > 0;
   }
 
-  start() {
-    assert(_initalized == true);
+  step(double elapsed) {
+    if (_initalized == false) {
+      return;
+    }
 
-    SchedulerBinding.instance.scheduleFrameCallback(step);
-    redraw();
-  }
-
-  step(Duration timeStamp) {
-    assert(_initalized == true);
-
-    physic.step();
-    SchedulerBinding.instance.scheduleFrameCallback(step, rescheduling: true);
-    redraw();
+    physic.step(elapsed);
   }
 
   setAngularVelocity(

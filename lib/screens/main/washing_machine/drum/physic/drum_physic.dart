@@ -7,7 +7,6 @@ import 'package:flutter/rendering.dart';
 
 class DrumPhysic {
   static const double GRAVITY = 9.8;
-  static const double TIME_STEP = 1 / 60;
   static const double WHIRLPOOL_CIRCLE_SEGMENTS = 28;
   static const double BALL_RADIUS = 16;
   static const double PPM = 100;
@@ -44,6 +43,7 @@ class DrumPhysic {
   double _endVelocity = 0.0;
   double _velocityStepValue = 0.0;
   bool _velocityStopAtEnd = false;
+  double _lastElapsed = 1 / 60;
 
   void initialize(double radiusValue) {
     _radius = radiusValue;
@@ -66,8 +66,9 @@ class DrumPhysic {
     });
   }
 
-  void step() {
-    world.stepDt(TIME_STEP, 5, 5);
+  void step(double elapsed) {
+    _lastElapsed = elapsed;
+    world.stepDt(elapsed, 5, 5);
     _velocityStep();
   }
 
@@ -82,8 +83,8 @@ class DrumPhysic {
       whirlpoolCoreBody.angularVelocity =
           (whirlpoolCoreBody.angularVelocity + value);
     } else {
-      _velocityStepValue =
-          (value - whirlpoolCoreBody.angularVelocity) / (seconds / TIME_STEP);
+      _velocityStepValue = (value - whirlpoolCoreBody.angularVelocity) /
+          (seconds / _lastElapsed);
     }
   }
 
