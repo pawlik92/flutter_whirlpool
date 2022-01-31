@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:quiver/async.dart';
 
 class TimerViewModel with ChangeNotifier {
-  Duration get remaining {
+  Duration? get remaining {
     if (_pausedRemaining != null) {
       return _pausedRemaining;
     }
@@ -13,7 +13,7 @@ class TimerViewModel with ChangeNotifier {
   }
 
   String get remainigString {
-    int totalSeconds = remaining.inSeconds;
+    int totalSeconds = remaining!.inSeconds;
     int minutes = (totalSeconds / 60).floor();
     int seconds = totalSeconds % 60;
 
@@ -23,8 +23,8 @@ class TimerViewModel with ChangeNotifier {
     return '$minutesString:$secondsString';
   }
 
-  CountdownTimer _countdownTimer;
-  Duration _pausedRemaining;
+  CountdownTimer? _countdownTimer;
+  Duration? _pausedRemaining;
 
   @override
   void dispose() {
@@ -32,21 +32,21 @@ class TimerViewModel with ChangeNotifier {
     super.dispose();
   }
 
-  start(Duration duration) {
+  start(Duration? duration) {
     if (duration == null) {
       return;
     }
     reset(callNotifyListeners: true);
 
     _countdownTimer = CountdownTimer(duration, Duration(seconds: 1));
-    _countdownTimer.listen((timer) => notifyListeners());
+    _countdownTimer!.listen((timer) => notifyListeners());
   }
 
   resume() {
     start(_pausedRemaining);
   }
 
-  reset({bool callNotifyListeners}) {
+  reset({bool? callNotifyListeners}) {
     _pausedRemaining = null;
     _countdownTimer?.cancel();
 

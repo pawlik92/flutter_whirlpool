@@ -1,24 +1,19 @@
 import 'dart:ui';
 
-import 'package:box2d_flame/box2d.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:forge2d/forge2d.dart';
 
 class DrumPhysicRenderer {
   DrumPhysicRenderer({
-    @required this.ppm,
+    required this.ppm,
   });
 
   final double ppm;
 
   renderBody(Canvas canvas, Body body) {
-    if (body == null) {
-      return;
-    }
-
-    double angle = body.getAngle();
+    double angle = body.angle;
     Vector2 position = body.position * ppm;
-    Color color = body.userData as Color;
+    Color? color = body.userData as Color?;
 
     Matrix4 matrix = Matrix4.identity()
       ..leftTranslate(position.x, position.y)
@@ -26,34 +21,34 @@ class DrumPhysicRenderer {
     canvas.save();
     canvas.transform(matrix.storage);
 
-    for (Fixture f = body.getFixtureList(); f != null; f = f.getNext()) {
-      if (f.getType() == ShapeType.CIRCLE) {
-        _drawCircleShape(canvas, f.getShape(), color);
-      } else if (f.getType() == ShapeType.POLYGON) {
-        _drawPolygonShape(canvas, f.getShape(), color);
-      } else if (f.getType() == ShapeType.CHAIN) {
-        _drawChainShape(canvas, f.getShape(), color);
+    for (Fixture f in body.fixtures) {
+      if (f.type == ShapeType.circle) {
+        _drawCircleShape(canvas, f.shape as CircleShape, color);
+      } else if (f.type == ShapeType.polygon) {
+        _drawPolygonShape(canvas, f.shape as PolygonShape, color);
+      } else if (f.type == ShapeType.chain) {
+        _drawChainShape(canvas, f.shape as ChainShape, color);
       }
     }
 
     canvas.restore();
   }
 
-  _drawCircleShape(Canvas canvas, CircleShape circle, Color color) {
+  _drawCircleShape(Canvas canvas, CircleShape circle, Color? color) {
     canvas.drawCircle(
-        Offset(circle.p.x * ppm, circle.p.x * ppm),
+        Offset(circle.position.x * ppm, circle.position.x * ppm),
         circle.radius * ppm,
         Paint()
           ..style = PaintingStyle.fill
           ..color = color != null ? color : Colors.amber);
   }
 
-  _drawPolygonShape(Canvas canvas, PolygonShape polygon, Color color) {
-    int vertexCount = polygon.getVertexCount();
+  _drawPolygonShape(Canvas canvas, PolygonShape polygon, Color? color) {
+    int verticesCount = polygon.vertices.length;
     List<Offset> points = [];
-    for (int i = 0; i < vertexCount; i++) {
-      Vector2 vertex = polygon.getVertex(i) * ppm;
-      points.add(Offset(vertex.x, vertex.y));
+    for (int i = 0; i < verticesCount; i++) {
+      Vector2 vertice = polygon.vertices[i] * ppm;
+      points.add(Offset(vertice.x, vertice.y));
     }
 
     canvas.drawRect(
@@ -64,12 +59,12 @@ class DrumPhysicRenderer {
           ..color = color != null ? color : Colors.blue);
   }
 
-  _drawChainShape(Canvas canvas, ChainShape chain, Color color) {
+  _drawChainShape(Canvas canvas, ChainShape chain, Color? color) {
     List<Offset> points = [];
-    int vertexCount = chain.getVertexCount();
+    int vertexCount = chain.vertexCount;
 
     for (int i = 0; i < vertexCount; i++) {
-      Vector2 vertex = chain.getVertex(i) * ppm;
+      Vector2 vertex = chain.vertex(i) * ppm;
       points.add(Offset(vertex.x, vertex.y));
     }
 

@@ -17,7 +17,7 @@ class ServiceLocator {
     getIt.registerSingleton<MainViewModel>(MainViewModel());
   }
 
-  static T get<T>() {
+  static T get<T extends Object>() {
     return getIt.get<T>();
   }
 }

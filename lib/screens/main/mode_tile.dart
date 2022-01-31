@@ -6,23 +6,23 @@ import 'package:flutter_whirlpool/shared/widgets.dart';
 
 class ModeTile extends StatelessWidget {
   const ModeTile({
-    Key key,
-    @required this.name,
-    @required this.indicatorColor,
-    @required this.minutes,
+    Key? key,
+    required this.name,
+    required this.indicatorColor,
+    required this.minutes,
     this.margin,
     this.pressed,
     this.onTap,
     this.disabled,
   }) : super(key: key);
 
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry? margin;
   final String name;
   final int minutes;
-  final bool pressed;
+  final bool? pressed;
   final Color indicatorColor;
-  final GestureTapCallback onTap;
-  final bool disabled;
+  final GestureTapCallback? onTap;
+  final bool? disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +78,8 @@ class ModeTile extends StatelessWidget {
 
 class _Indicator extends StatelessWidget {
   const _Indicator({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
   }) : super(key: key);
 
   final Color color;

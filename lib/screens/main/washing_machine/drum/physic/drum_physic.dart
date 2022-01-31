@@ -1,9 +1,8 @@
 import 'dart:math';
-import 'package:box2d_flame/box2d.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async' as dartAsync;
 
 import 'package:flutter/rendering.dart';
+import 'package:forge2d/forge2d.dart';
 
 class DrumPhysic {
   static const double GRAVITY = 9.8;
@@ -17,9 +16,13 @@ class DrumPhysic {
   static const Color BALL_COLOR_PINK = Color.fromARGB(255, 253, 66, 193);
 
   DrumPhysic({
-    @required this.ballsCount,
-  }) : this.world = World.withGravity(Vector2(0, GRAVITY)) {
+    required this.ballsCount,
+  }) : this.world = World(Vector2(0, GRAVITY)) {
     assert(ballsCount > 0);
+
+    // forge2d settings
+    velocityIterations = 5;
+    positionIterations = 5;
   }
 
   final World world;
@@ -27,16 +30,16 @@ class DrumPhysic {
   final _random = Random();
 
   Offset get origin {
-    return Offset(radius, radius);
+    return Offset(radius!, radius!);
   }
 
-  double get radius => _radius;
+  double? get radius => _radius;
 
-  double _radius;
-  Body whirlpoolCoreBody;
-  Body whirlpoolBaseBody;
+  double? _radius;
+  late Body whirlpoolCoreBody;
+  late Body whirlpoolBaseBody;
   List<Body> balls = [];
-  Joint whirlpoolJoint;
+  Joint? whirlpoolJoint;
   RevoluteJointDef revoluteJointDef = RevoluteJointDef();
 
   // Velocity force variables
@@ -45,7 +48,7 @@ class DrumPhysic {
   bool _velocityStopAtEnd = false;
   double _lastElapsed = 1 / 60;
 
-  void initialize(double radiusValue) {
+  void initialize(double? radiusValue) {
     _radius = radiusValue;
     _createWhirlpool();
   }
@@ -68,7 +71,7 @@ class DrumPhysic {
 
   void step(double elapsed) {
     _lastElapsed = elapsed;
-    world.stepDt(elapsed, 5, 5);
+    world.stepDt(elapsed);
     _velocityStep();
   }
 
@@ -134,21 +137,19 @@ class DrumPhysic {
     polygonShape.setAsBoxXY(2 / PPM, 2 / PPM);
 
     final bodyDef = BodyDef()
-      ..type = BodyType.STATIC
+      ..type = BodyType.static
       ..position = Vector2(origin.dx / PPM, origin.dy / PPM);
 
     whirlpoolBaseBody = world.createBody(bodyDef);
 
-    final fixtureDef = FixtureDef()
-      ..shape = polygonShape
-      ..isSensor = true;
-    whirlpoolBaseBody.createFixtureFromFixtureDef(fixtureDef);
+    final fixtureDef = FixtureDef(polygonShape)..isSensor = true;
+    whirlpoolBaseBody.createFixture(fixtureDef);
   }
 
   void _createWhirlpoolCore() {
     final chainShape = ChainShape();
     final bodyDef = BodyDef()
-      ..type = BodyType.KINEMATIC
+      ..type = BodyType.kinematic
       ..fixedRotation = true
       ..position = Vector2(origin.dx / PPM, origin.dy / PPM);
 
@@ -156,19 +157,16 @@ class DrumPhysic {
     for (int i = 0; i < WHIRLPOOL_CIRCLE_SEGMENTS; i++) {
       double angle = ((pi * 2) / WHIRLPOOL_CIRCLE_SEGMENTS) * i;
       vertices.add(Vector2(
-        radius * cos(angle) / PPM,
-        radius * sin(angle) / PPM,
+        radius! * cos(angle) / PPM,
+        radius! * sin(angle) / PPM,
       ));
     }
 
-    chainShape.createLoop(vertices, vertices.length);
+    chainShape.createLoop(vertices);
     whirlpoolCoreBody = world.createBody(bodyDef);
 
-    final fixtureDef = FixtureDef()
-      ..shape = chainShape
-      ..density = 10;
-
-    whirlpoolCoreBody.createFixtureFromFixtureDef(fixtureDef);
+    final fixtureDef = FixtureDef(chainShape)..density = 10;
+    whirlpoolCoreBody.createFixture(fixtureDef);
   }
 
   void _jointWhirlpool() {
@@ -183,21 +181,20 @@ class DrumPhysic {
   void _createBall(int offsetX, Color color) {
     final bouncingRectangle = CircleShape()..radius = BALL_RADIUS / PPM;
 
-    final activeFixtureDef = FixtureDef();
-    activeFixtureDef.density = 4;
-    activeFixtureDef.friction = 1;
-    activeFixtureDef.restitution = .2;
-    activeFixtureDef.shape = bouncingRectangle;
+    final activeFixtureDef = FixtureDef(bouncingRectangle)
+      ..density = 4
+      ..friction = 1
+      ..restitution = .2;
 
     final activeBodyDef = BodyDef();
     activeBodyDef.position = Vector2(
       ((origin.dx + offsetX) / PPM),
-      (origin.dy - (radius / 2) - 10) / PPM,
+      (origin.dy - (radius! / 2) - 10) / PPM,
     );
-    activeBodyDef.type = BodyType.DYNAMIC;
+    activeBodyDef.type = BodyType.dynamic;
     activeBodyDef.bullet = true;
     Body boxBody = world.createBody(activeBodyDef);
-    boxBody.createFixtureFromFixtureDef(activeFixtureDef);
+    boxBody.createFixture(activeFixtureDef);
     boxBody.userData = color;
 
     balls.add(boxBody);

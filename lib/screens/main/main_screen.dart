@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/models/mode_item_model.dart';
 import 'package:flutter_whirlpool/screens/main/mode_tile.dart';
 import 'package:flutter_whirlpool/screens/main/top_bar.dart';
@@ -17,7 +16,7 @@ class MainScreen extends StatelessWidget {
     left: GLOBAL_EDGE_MARGIN_VALUE,
   );
 
-  const MainScreen({Key key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +102,7 @@ class MainScreen extends StatelessWidget {
 }
 
 class _FunctionButtonsList extends StatelessWidget {
-  const _FunctionButtonsList({Key key}) : super(key: key);
+  const _FunctionButtonsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +115,7 @@ class _FunctionButtonsList extends StatelessWidget {
             Padding(
               padding: margin,
               child: _Indicator(
-                color: viewModel?.selectedMode?.color,
+                color: viewModel.selectedMode?.color,
                 blink: viewModel.modeStatus == ModeStatus.running,
               ),
             ),
@@ -156,13 +155,13 @@ class _FunctionButtonsList extends StatelessWidget {
 
 class _Indicator extends StatefulWidget {
   const _Indicator({
-    Key key,
+    Key? key,
     this.color,
     this.blink,
   }) : super(key: key);
 
-  final Color color;
-  final bool blink;
+  final Color? color;
+  final bool? blink;
 
   @override
   _IndicatorState createState() => _IndicatorState();
@@ -170,8 +169,8 @@ class _Indicator extends StatefulWidget {
 
 class _IndicatorState extends State<_Indicator>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _colorTween;
+  late AnimationController _controller;
+  late Animation _colorTween;
 
   @override
   void initState() {
@@ -200,7 +199,7 @@ class _IndicatorState extends State<_Indicator>
   }
 
   void setupAnimation() {
-    Color startColor = CustomColors.primaryTextColor.withAlpha(150);
+    Color? startColor = CustomColors.primaryTextColor.withAlpha(150);
     Color endColor = CustomColors.primaryTextColor.withAlpha(150);
     if (widget.color != null) {
       startColor = widget.color;
@@ -253,7 +252,7 @@ class _IndicatorState extends State<_Indicator>
 }
 
 class _ModesList extends StatelessWidget {
-  const _ModesList({Key key}) : super(key: key);
+  const _ModesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -278,14 +277,12 @@ class _ModesList extends StatelessWidget {
             child: Consumer<MainViewModel>(
               builder: (context, viewModel, _) {
                 return ListView.builder(
+                    itemCount: viewModel.nodes.length,
                     itemBuilder: (context, index) {
-                      if (index > viewModel.nodes.length - 1) {
-                        return null;
-                      }
                       ModeItemModel item = viewModel.nodes[index];
 
                       return ModeTile(
-                        pressed: viewModel?.selectedMode == item,
+                        pressed: viewModel.selectedMode == item,
                         indicatorColor: item.color,
                         name: item.name,
                         minutes: item.minutes,

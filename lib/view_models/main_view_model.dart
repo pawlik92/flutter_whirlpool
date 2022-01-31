@@ -43,11 +43,11 @@ class MainViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  ModeItemModel get selectedMode => _selectedMode;
+  ModeItemModel? get selectedMode => _selectedMode;
   ModeStatus get modeStatus => _modeStatus;
 
   double _waterValue = 600.0;
-  ModeItemModel _selectedMode;
+  ModeItemModel? _selectedMode;
   ModeStatus _modeStatus = ModeStatus.notStarted;
 
   runOrPause() {
@@ -74,7 +74,7 @@ class MainViewModel with ChangeNotifier {
         washingMachineController.initializeBalls();
       }
 
-      timerVM.start(Duration(minutes: selectedMode.minutes));
+      timerVM.start(Duration(minutes: selectedMode!.minutes));
 
       Timer.periodic(
           Duration(seconds: !washingMachineController.hasBalls() ? 2 : 0),

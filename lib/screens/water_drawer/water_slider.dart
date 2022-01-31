@@ -8,11 +8,11 @@ typedef ValueChangeCallback = void Function(double value);
 
 class WaterSlider extends StatefulWidget {
   WaterSlider({
-    @required this.minValue,
-    @required this.maxValue,
+    required this.minValue,
+    required this.maxValue,
     this.initValue,
     this.onValueChanged,
-    Key key,
+    Key? key,
   }) : super(key: key) {
     assert(minValue < maxValue);
     assert(minValue >= 0);
@@ -21,8 +21,8 @@ class WaterSlider extends StatefulWidget {
 
   final double minValue;
   final double maxValue;
-  final double initValue;
-  final ValueChangeCallback onValueChanged;
+  final double? initValue;
+  final ValueChangeCallback? onValueChanged;
 
   @override
   _WaterSliderState createState() => _WaterSliderState();
@@ -30,7 +30,7 @@ class WaterSlider extends StatefulWidget {
 
 class _WaterSliderState extends State<WaterSlider>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   void initState() {
@@ -40,12 +40,12 @@ class _WaterSliderState extends State<WaterSlider>
       vsync: this,
     );
 
-    _animationController.forward();
+    _animationController!.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController!.dispose();
     super.dispose();
   }
 
@@ -81,7 +81,7 @@ class _WaterSliderState extends State<WaterSlider>
                       topOffset: 40,
                       bottomOffset: 58,
                       initValue: widget.initValue,
-                      onValueChanged: widget?.onValueChanged,
+                      onValueChanged: widget.onValueChanged,
                     ),
                   ],
                 ),
@@ -90,7 +90,7 @@ class _WaterSliderState extends State<WaterSlider>
             Padding(
               padding: const EdgeInsets.only(left: 12),
               child: _SliderLegend(
-                controller: _animationController.view,
+                controller: _animationController!.view,
                 min: widget.minValue,
                 max: widget.maxValue,
                 step: 50,
@@ -108,14 +108,14 @@ class _WaterSliderState extends State<WaterSlider>
 
 class _SliderLegend extends StatelessWidget {
   _SliderLegend({
-    @required this.min,
-    @required this.max,
-    @required this.step,
-    @required this.controller,
+    required this.min,
+    required this.max,
+    required this.step,
+    required this.controller,
     this.topOffset = 0.0,
     this.bottomOffset = 0.0,
     this.markNStep,
-    Key key,
+    Key? key,
   })  : shortLineWidth = Tween<double>(
           begin: 0.0,
           end: 25.0,
@@ -162,7 +162,7 @@ class _SliderLegend extends StatelessWidget {
   final double step;
   final double topOffset;
   final double bottomOffset;
-  final int markNStep;
+  final int? markNStep;
   final Animation<double> controller;
   final Animation<double> shortLineWidth;
   final Animation<double> longLineWidth;
@@ -175,7 +175,7 @@ class _SliderLegend extends StatelessWidget {
         return Container(
           width: 120,
           child: AnimatedBuilder(
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext context, Widget? child) {
               return Stack(children: _generateRangeList(constraints.maxHeight));
             },
             animation: controller,
@@ -193,7 +193,7 @@ class _SliderLegend extends StatelessWidget {
         (height - topOffset - bottomOffset) / (numberOfLines - 1);
 
     for (int i = 0; i < numberOfLines; i++) {
-      bool markStep = markNStep != null && i % markNStep == 0;
+      bool markStep = markNStep != null && i % markNStep! == 0;
       double top = topOffset + i * bottomMargin;
 
       result.add(
@@ -235,15 +235,15 @@ class _SliderLegend extends StatelessWidget {
 
 class _WaterSlide extends StatefulWidget {
   _WaterSlide({
-    @required this.height,
-    @required this.min,
-    @required this.max,
-    @required this.controller,
+    required this.height,
+    required this.min,
+    required this.max,
+    required this.controller,
     this.topOffset = 0.0,
     this.bottomOffset = 0.0,
     this.onValueChanged,
     this.initValue,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final double height;
@@ -251,16 +251,16 @@ class _WaterSlide extends StatefulWidget {
   final double max;
   final double topOffset;
   final double bottomOffset;
-  final double initValue;
-  final Animation<double> controller;
-  final ValueChangeCallback onValueChanged;
+  final double? initValue;
+  final Animation<double>? controller;
+  final ValueChangeCallback? onValueChanged;
 
   @override
   _WaterSlideState createState() => _WaterSlideState();
 }
 
 class _WaterSlideState extends State<_WaterSlide> {
-  Animation _growAnimation;
+  late Animation _growAnimation;
   double _yOffset = 0;
 
   @override
@@ -269,14 +269,14 @@ class _WaterSlideState extends State<_WaterSlide> {
 
     double animationEndValue = widget.initValue == null
         ? _validateYOffset(_yOffset)
-        : _validateYOffset(_calculateYOffset(widget.initValue));
+        : _validateYOffset(_calculateYOffset(widget.initValue!));
 
     _growAnimation = Tween<double>(
       begin: widget.height,
       end: animationEndValue,
     ).animate(
       CurvedAnimation(
-        parent: widget.controller,
+        parent: widget.controller!,
         curve: Interval(0.350, .750, curve: Curves.easeOutCubic),
       ),
     )..addListener(
@@ -328,7 +328,7 @@ class _WaterSlideState extends State<_WaterSlide> {
     double value = (currentH + (widget.min * factor)) / factor;
 
     if (widget.onValueChanged != null) {
-      widget.onValueChanged(value);
+      widget.onValueChanged!(value);
     }
   }
 

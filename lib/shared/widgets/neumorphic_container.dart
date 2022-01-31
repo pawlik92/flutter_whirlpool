@@ -6,7 +6,7 @@ import 'package:flutter_whirlpool/shared/decorators.dart';
 
 class NeumorphicContainer extends StatelessWidget {
   const NeumorphicContainer({
-    Key key,
+    Key? key,
     this.child,
     this.pressed,
     this.width,
@@ -22,19 +22,19 @@ class NeumorphicContainer extends StatelessWidget {
     this.disabled,
   }) : super(key: key);
 
-  final bool pressed;
-  final double width;
-  final double height;
-  final Widget child;
-  final EdgeInsetsGeometry margin;
-  final Color color;
-  final BorderRadius borderRadius;
-  final BoxBorder border;
-  final Decoration decoration;
-  final Decoration foregroundDecoration;
-  final EdgeInsetsGeometry padding;
-  final bool disableForegroundDecoration;
-  final bool disabled;
+  final bool? pressed;
+  final double? width;
+  final double? height;
+  final Widget? child;
+  final EdgeInsetsGeometry? margin;
+  final Color? color;
+  final BorderRadius? borderRadius;
+  final BoxBorder? border;
+  final Decoration? decoration;
+  final Decoration? foregroundDecoration;
+  final EdgeInsetsGeometry? padding;
+  final bool? disableForegroundDecoration;
+  final bool? disabled;
 
   @override
   Widget build(BuildContext context) {

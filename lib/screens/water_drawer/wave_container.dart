@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/animation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:vector_math/vector_math.dart' as Vector;
@@ -14,9 +12,9 @@ import 'package:vector_math/vector_math.dart' as Vector;
  */
 class WaveContainer extends StatefulWidget {
   WaveContainer({
-    Key key,
-    @required this.size,
-    @required this.offset,
+    Key? key,
+    required this.size,
+    required this.offset,
     this.color,
     this.duration = const Duration(seconds: 4),
     this.sinWidthFraction = 3,
@@ -24,7 +22,7 @@ class WaveContainer extends StatefulWidget {
 
   final Size size;
   final Offset offset;
-  final Color color;
+  final Color? color;
   final Duration duration;
   final int sinWidthFraction;
 
@@ -36,7 +34,7 @@ class WaveContainer extends StatefulWidget {
 
 class _WaveContainerState extends State<WaveContainer>
     with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
   List<Offset> animationListener = [];
 
   @override

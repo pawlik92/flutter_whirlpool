@@ -3,8 +3,8 @@ import 'package:flutter_whirlpool/shared/widgets.dart';
 
 class NeumorphicButton extends StatefulWidget {
   NeumorphicButton({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.width = 54.0,
     this.height = 54.0,
     this.pressed,
@@ -14,14 +14,14 @@ class NeumorphicButton extends StatefulWidget {
     this.disabled,
   }) : super(key: key);
 
-  final bool pressed;
+  final bool? pressed;
   final double width;
   final double height;
   final Widget child;
-  final EdgeInsetsGeometry margin;
-  final GestureTapCallback onTap;
-  final Color color;
-  final bool disabled;
+  final EdgeInsetsGeometry? margin;
+  final GestureTapCallback? onTap;
+  final Color? color;
+  final bool? disabled;
 
   @override
   _NeumorphicButtonState createState() => _NeumorphicButtonState();
@@ -37,7 +37,7 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
       onTapUp: _onTapUp,
       onTapCancel: _onTapCancel,
       child: NeumorphicContainer(
-        pressed: widget?.pressed ?? _isPressed,
+        pressed: widget.pressed ?? _isPressed,
         width: widget.width,
         height: widget.height,
         child: widget.child,
@@ -54,7 +54,7 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
     });
 
     if (widget.onTap != null && widget.disabled != true) {
-      widget.onTap();
+      widget.onTap!();
     }
   }
 

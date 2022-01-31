@@ -11,9 +11,9 @@ import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/utils.dart';
 
 class WashingMachineDrum extends LeafRenderObjectWidget {
-  WashingMachineDrum(this.controller, {Key key}) : super(key: key);
+  WashingMachineDrum(this.controller, {Key? key}) : super(key: key);
 
-  final WashingMachineController controller;
+  final WashingMachineController? controller;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -32,22 +32,22 @@ class WashingMachineDrum extends LeafRenderObjectWidget {
 class _WhirlpoolRenderObject extends RenderBox {
   DrumPhysicRenderer _physicRenderer = DrumPhysicRenderer(ppm: DrumPhysic.PPM);
 
-  WashingMachineController get controller => _controller;
+  WashingMachineController? get controller => _controller;
 
-  WashingMachineController _controller;
+  WashingMachineController? _controller;
   double _lastTimeStamp = 0.0;
 
-  set controller(WashingMachineController value) {
+  set controller(WashingMachineController? value) {
     if (_controller == value) {
       return;
     }
 
     _controller = value;
-    _controller.onNeedPaint = markNeedsPaint;
+    _controller!.onNeedPaint = markNeedsPaint;
     markNeedsPaint();
     markNeedsLayout();
 
-    SchedulerBinding.instance.scheduleFrameCallback(frame);
+    SchedulerBinding.instance!.scheduleFrameCallback(frame);
   }
 
   @override
@@ -66,13 +66,18 @@ class _WhirlpoolRenderObject extends RenderBox {
     //     context.canvas, controller.physic.whirlpoolCoreBody);
   }
 
+  @override
+  Size computeDryLayout(BoxConstraints constraints) {
+    return constraints.biggest;
+  }
+
   frame(Duration timeStamp) {
     final double t =
         timeStamp.inMicroseconds / Duration.microsecondsPerMillisecond / 1000.0;
 
     if (_lastTimeStamp == 0) {
       _lastTimeStamp = t;
-      SchedulerBinding.instance.scheduleFrameCallback(frame);
+      SchedulerBinding.instance!.scheduleFrameCallback(frame);
       return;
     }
 
@@ -81,11 +86,11 @@ class _WhirlpoolRenderObject extends RenderBox {
 
     controller?.step(elapsed);
     controller?.redraw();
-    SchedulerBinding.instance.scheduleFrameCallback(frame);
+    SchedulerBinding.instance!.scheduleFrameCallback(frame);
   }
 
   _drawWhirlpool(PaintingContext context, Offset offset) {
-    if (controller.devMode != true) {
+    if (controller!.devMode != true) {
       context.pushLayer(
           ColorFilterLayer(
             colorFilter: ColorFilter.matrix(
@@ -109,14 +114,14 @@ class _WhirlpoolRenderObject extends RenderBox {
   _drawBalls(PaintingContext context, Offset offset) async {
     Canvas canvas = context.canvas;
     var rect = Rect.fromLTWH(
-        controller.physic.origin.dx - controller.physic.radius,
-        controller.physic.origin.dy - controller.physic.radius,
-        controller.physic.radius * 2,
-        controller.physic.radius * 2);
+        controller!.physic.origin.dx - controller!.physic.radius!,
+        controller!.physic.origin.dy - controller!.physic.radius!,
+        controller!.physic.radius! * 2,
+        controller!.physic.radius! * 2);
     canvas.save();
     canvas.clipPath(Path()..addOval(rect));
 
-    controller.physic.balls.forEach((body) {
+    controller!.physic.balls.forEach((body) {
       _physicRenderer.renderBody(canvas, body);
     });
     canvas.restore();
@@ -141,7 +146,7 @@ class _WhirlpoolRenderObject extends RenderBox {
     canvas.save();
     canvas.translate(
         context.estimatedBounds.center.dx, context.estimatedBounds.center.dy);
-    canvas.rotate(controller.drumAngle);
+    canvas.rotate(controller!.drumAngle);
     canvas.scale(1.05);
     canvas.translate(
         -context.estimatedBounds.center.dx, -context.estimatedBounds.center.dy);

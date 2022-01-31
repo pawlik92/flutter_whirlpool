@@ -12,7 +12,8 @@ void main() {
   ServiceLocator.init();
 
   runApp(MyApp());
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
 }
 
 class MyApp extends StatelessWidget {

@@ -4,8 +4,7 @@ import 'package:flutter_whirlpool/view_models/service_locator.dart';
 import 'package:flutter_whirlpool/view_models/theme_view_model.dart';
 
 class CustomColors {
-  static bool get isDarkMode =>
-      ServiceLocator.get<ThemeViewModel>()?.darkMode ?? false;
+  static bool get isDarkMode => ServiceLocator.get<ThemeViewModel>().darkMode;
 
   static Color get primaryColor =>
       isDarkMode ? _primaryColorDark : _primaryColorLight;

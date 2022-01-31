@@ -6,26 +6,26 @@ import 'package:flutter_whirlpool/view_models/service_locator.dart';
 
 class WashingMachineCase extends StatefulWidget {
   const WashingMachineCase({
-    Key key,
+    Key? key,
     this.width,
     this.height,
   }) : super(key: key);
 
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   @override
   _WashingMachineCaseState createState() => _WashingMachineCaseState();
 }
 
 class _WashingMachineCaseState extends State<WashingMachineCase> {
-  WashingMachineController _controller;
+  WashingMachineController? _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = ServiceLocator.get<WashingMachineController>();
-    _controller.initialize(radius: widget.width / 2 - 64);
+    _controller!.initialize(radius: widget.width! / 2 - 64);
   }
 
   @override
@@ -57,8 +57,8 @@ class _WashingMachineCaseState extends State<WashingMachineCase> {
       ),
       child: Center(
         child: Container(
-          width: widget.width - ring1Offset,
-          height: widget.height - ring1Offset,
+          width: widget.width! - ring1Offset,
+          height: widget.height! - ring1Offset,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.3, 0.07),
@@ -70,8 +70,8 @@ class _WashingMachineCaseState extends State<WashingMachineCase> {
           ),
           child: Center(
             child: Container(
-              width: widget.width - ring1Offset - ring2Offset,
-              height: widget.height - ring1Offset - ring2Offset,
+              width: widget.width! - ring1Offset - ring2Offset,
+              height: widget.height! - ring1Offset - ring2Offset,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment(0.36, 0.07),
@@ -83,8 +83,10 @@ class _WashingMachineCaseState extends State<WashingMachineCase> {
               ),
               child: Center(
                 child: Container(
-                  width: widget.width - ring1Offset - ring2Offset - ring3Offset,
-                  height: widget.height - ring1Offset - ring2Offset - ring3Offset,
+                  width:
+                      widget.width! - ring1Offset - ring2Offset - ring3Offset,
+                  height:
+                      widget.height! - ring1Offset - ring2Offset - ring3Offset,
                   child: ClipOval(
                     child: WashingMachineDrum(_controller),
                   ),

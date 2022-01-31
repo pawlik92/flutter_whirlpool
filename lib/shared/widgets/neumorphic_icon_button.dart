@@ -3,8 +3,8 @@ import 'package:flutter_whirlpool/shared/widgets.dart';
 
 class NeumorphicIconButton extends StatelessWidget {
   const NeumorphicIconButton({
-    Key key,
-    @required this.icon,
+    Key? key,
+    required this.icon,
     this.onTap,
     this.margin,
     this.color,
@@ -13,11 +13,11 @@ class NeumorphicIconButton extends StatelessWidget {
   }) : super(key: key);
 
   final Icon icon;
-  final EdgeInsetsGeometry margin;
-  final GestureTapCallback onTap;
-  final Color color;
-  final bool pressed;
-  final bool disabled;
+  final EdgeInsetsGeometry? margin;
+  final GestureTapCallback? onTap;
+  final Color? color;
+  final bool? pressed;
+  final bool? disabled;
 
   @override
   Widget build(BuildContext context) {

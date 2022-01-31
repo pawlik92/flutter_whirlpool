@@ -7,7 +7,7 @@ import 'package:flutter_whirlpool/view_models/main_view_model.dart';
 import 'package:provider/provider.dart';
 
 class WaterDrawer extends StatelessWidget {
-  const WaterDrawer({Key key}) : super(key: key);
+  const WaterDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
