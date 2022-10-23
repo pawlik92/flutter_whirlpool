@@ -40,7 +40,7 @@ class DrumPhysicRenderer {
         circle.radius * ppm,
         Paint()
           ..style = PaintingStyle.fill
-          ..color = color != null ? color : Colors.amber);
+          ..color = color ?? Colors.amber);
   }
 
   _drawPolygonShape(Canvas canvas, PolygonShape polygon, Color? color) {
@@ -56,7 +56,7 @@ class DrumPhysicRenderer {
         Paint()
           ..strokeWidth = 1
           ..style = PaintingStyle.fill
-          ..color = color != null ? color : Colors.blue);
+          ..color = color ?? Colors.blue);
   }
 
   _drawChainShape(Canvas canvas, ChainShape chain, Color? color) {
@@ -74,6 +74,6 @@ class DrumPhysicRenderer {
         Paint()
           ..strokeWidth = 1
           ..style = PaintingStyle.fill
-          ..color = color != null ? color : Colors.green);
+          ..color = color ?? Colors.green);
   }
 }

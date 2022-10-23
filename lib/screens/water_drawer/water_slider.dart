@@ -25,10 +25,10 @@ class WaterSlider extends StatefulWidget {
   final ValueChangeCallback? onValueChanged;
 
   @override
-  _WaterSliderState createState() => _WaterSliderState();
+  WaterSliderState createState() => WaterSliderState();
 }
 
-class _WaterSliderState extends State<WaterSlider>
+class WaterSliderState extends State<WaterSlider>
     with SingleTickerProviderStateMixin {
   AnimationController? _animationController;
 
@@ -122,7 +122,7 @@ class _SliderLegend extends StatelessWidget {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: Interval(
+            curve: const Interval(
               0.180,
               0.350,
               curve: Curves.ease,
@@ -135,7 +135,7 @@ class _SliderLegend extends StatelessWidget {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: Interval(
+            curve: const Interval(
               0.180,
               0.350,
               curve: Curves.ease,
@@ -148,7 +148,7 @@ class _SliderLegend extends StatelessWidget {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: Interval(
+            curve: const Interval(
               0.110,
               0.350,
               curve: Curves.ease,
@@ -172,7 +172,7 @@ class _SliderLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return Container(
+        return SizedBox(
           width: 120,
           child: AnimatedBuilder(
             builder: (BuildContext context, Widget? child) {
@@ -234,7 +234,7 @@ class _SliderLegend extends StatelessWidget {
 }
 
 class _WaterSlide extends StatefulWidget {
-  _WaterSlide({
+  const _WaterSlide({
     required this.height,
     required this.min,
     required this.max,
@@ -277,7 +277,7 @@ class _WaterSlideState extends State<_WaterSlide> {
     ).animate(
       CurvedAnimation(
         parent: widget.controller!,
-        curve: Interval(0.350, .750, curve: Curves.easeOutCubic),
+        curve: const Interval(0.350, .750, curve: Curves.easeOutCubic),
       ),
     )..addListener(
         () {
@@ -299,8 +299,8 @@ class _WaterSlideState extends State<_WaterSlide> {
           children: [
             WaveContainer(
               size: Size(90, widget.height),
-              offset: Offset(45, 0),
-              color: Color.fromRGBO(254, 193, 45, .3),
+              offset: const Offset(45, 0),
+              color: const Color.fromRGBO(254, 193, 45, .3),
               sinWidthFraction: 2,
             ),
             WaveContainer(

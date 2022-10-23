@@ -17,9 +17,9 @@ class WaterDrawer extends StatelessWidget {
           color: CustomColors.primaryColor,
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.only(
-                left: GLOBAL_EDGE_MARGIN_VALUE,
-                top: DRAWER_BUTTON_MARGIN_TOP,
+              padding: const EdgeInsets.only(
+                left: globalEdgeMarginValue,
+                top: drawerButtonMarginTop,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +32,7 @@ class WaterDrawer extends StatelessWidget {
                     ),
                     onTap: () => Navigator.pop(context),
                   ),
-                  SizedBox(height: 35),
+                  const SizedBox(height: 35),
                   Text(
                     'Choose water',
                     style: TextStyle(
@@ -41,7 +41,7 @@ class WaterDrawer extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 3),
+                  const SizedBox(height: 3),
                   Text(
                     'Please save choice',
                     style: TextStyle(
@@ -50,7 +50,7 @@ class WaterDrawer extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Expanded(
                     child: WaterSlider(
                       minValue: 200,
@@ -60,7 +60,7 @@ class WaterDrawer extends StatelessWidget {
                           viewModel.waterValue = newValue,
                     ),
                   ),
-                  SizedBox(height: 80),
+                  const SizedBox(height: 80),
                   RichText(
                     text: TextSpan(
                       text: 'Current  ',
@@ -72,12 +72,12 @@ class WaterDrawer extends StatelessWidget {
                       children: <TextSpan>[
                         TextSpan(
                           text: viewModel.waterValue.toStringAsFixed(0),
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),

@@ -11,12 +11,14 @@ import 'package:provider/provider.dart';
 void main() {
   ServiceLocator.init();
 
-  runApp(MyApp());
+  runApp(const MyApp());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom]);
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (_) => ServiceLocator.get<TimerViewModel>()),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Smart Washing Machine',
         debugShowCheckedModeBanner: false,
         home: MainScreen(),

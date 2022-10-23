@@ -38,7 +38,7 @@ class TimerViewModel with ChangeNotifier {
     }
     reset(callNotifyListeners: true);
 
-    _countdownTimer = CountdownTimer(duration, Duration(seconds: 1));
+    _countdownTimer = CountdownTimer(duration, const Duration(seconds: 1));
     _countdownTimer!.listen((timer) => notifyListeners());
   }
 

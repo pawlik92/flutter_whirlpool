@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_whirlpool/shared/widgets.dart';
 
 class NeumorphicButton extends StatefulWidget {
-  NeumorphicButton({
+  const NeumorphicButton({
     Key? key,
     required this.child,
     this.width = 54.0,
@@ -24,10 +24,10 @@ class NeumorphicButton extends StatefulWidget {
   final bool? disabled;
 
   @override
-  _NeumorphicButtonState createState() => _NeumorphicButtonState();
+  NeumorphicButtonState createState() => NeumorphicButtonState();
 }
 
-class _NeumorphicButtonState extends State<NeumorphicButton> {
+class NeumorphicButtonState extends State<NeumorphicButton> {
   bool _isPressed = false;
 
   @override
@@ -40,10 +40,10 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
         pressed: widget.pressed ?? _isPressed,
         width: widget.width,
         height: widget.height,
-        child: widget.child,
         margin: widget.margin,
         color: widget.color,
         disabled: widget.disabled,
+        child: widget.child,
       ),
     );
   }

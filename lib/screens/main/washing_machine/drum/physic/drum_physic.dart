@@ -1,23 +1,23 @@
 import 'dart:math';
-import 'dart:async' as dartAsync;
+import 'dart:async' as dart_async;
 
 import 'package:flutter/rendering.dart';
 import 'package:forge2d/forge2d.dart';
 
 class DrumPhysic {
-  static const double GRAVITY = 9.8;
-  static const double WHIRLPOOL_CIRCLE_SEGMENTS = 28;
-  static const double BALL_RADIUS = 16;
-  static const double PPM = 100;
+  static const double gravity = 9.8;
+  static const double whirlpoolCircleSegments = 28;
+  static const double ballRadius = 16;
+  static const double ppm = 100;
 
-  static const Color BALL_COLOR_BLUE = Color.fromARGB(255, 62, 36, 251);
-  static const Color BALL_COLOR_AQUA = Color.fromARGB(255, 39, 230, 227);
-  static const Color BALL_COLOR_ORANGE = Color.fromARGB(255, 253, 112, 33);
-  static const Color BALL_COLOR_PINK = Color.fromARGB(255, 253, 66, 193);
+  static const Color ballColorBlue = Color.fromARGB(255, 62, 36, 251);
+  static const Color ballColorAqua = Color.fromARGB(255, 39, 230, 227);
+  static const Color ballColorOrange = Color.fromARGB(255, 253, 112, 33);
+  static const Color ballColorPink = Color.fromARGB(255, 253, 66, 193);
 
   DrumPhysic({
     required this.ballsCount,
-  }) : this.world = World(Vector2(0, GRAVITY)) {
+  }) : world = World(Vector2(0, gravity)) {
     assert(ballsCount > 0);
 
     // forge2d settings
@@ -54,11 +54,11 @@ class DrumPhysic {
   }
 
   void initializeBalls() {
-    if (balls.length > 0) {
+    if (balls.isNotEmpty) {
       return;
     }
 
-    dartAsync.Timer.periodic(Duration(milliseconds: 70), (timer) {
+    dart_async.Timer.periodic(const Duration(milliseconds: 70), (timer) {
       int offsetX =
           _randomBetween(-origin.dx.toInt() + 30, origin.dx.toInt() - 30);
       _createBall(offsetX, _randomColor());
@@ -116,10 +116,10 @@ class DrumPhysic {
 
   Color _randomColor() {
     List<Color> colors = [
-      BALL_COLOR_BLUE,
-      BALL_COLOR_AQUA,
-      BALL_COLOR_ORANGE,
-      BALL_COLOR_PINK
+      ballColorBlue,
+      ballColorAqua,
+      ballColorOrange,
+      ballColorPink
     ];
     int random = _randomBetween(0, colors.length);
 
@@ -134,11 +134,11 @@ class DrumPhysic {
 
   void _createWhirlpoolBase() {
     final polygonShape = PolygonShape();
-    polygonShape.setAsBoxXY(2 / PPM, 2 / PPM);
+    polygonShape.setAsBoxXY(2 / ppm, 2 / ppm);
 
     final bodyDef = BodyDef()
       ..type = BodyType.static
-      ..position = Vector2(origin.dx / PPM, origin.dy / PPM);
+      ..position = Vector2(origin.dx / ppm, origin.dy / ppm);
 
     whirlpoolBaseBody = world.createBody(bodyDef);
 
@@ -151,14 +151,14 @@ class DrumPhysic {
     final bodyDef = BodyDef()
       ..type = BodyType.kinematic
       ..fixedRotation = true
-      ..position = Vector2(origin.dx / PPM, origin.dy / PPM);
+      ..position = Vector2(origin.dx / ppm, origin.dy / ppm);
 
     List<Vector2> vertices = [];
-    for (int i = 0; i < WHIRLPOOL_CIRCLE_SEGMENTS; i++) {
-      double angle = ((pi * 2) / WHIRLPOOL_CIRCLE_SEGMENTS) * i;
+    for (int i = 0; i < whirlpoolCircleSegments; i++) {
+      double angle = ((pi * 2) / whirlpoolCircleSegments) * i;
       vertices.add(Vector2(
-        radius! * cos(angle) / PPM,
-        radius! * sin(angle) / PPM,
+        radius! * cos(angle) / ppm,
+        radius! * sin(angle) / ppm,
       ));
     }
 
@@ -179,7 +179,7 @@ class DrumPhysic {
   }
 
   void _createBall(int offsetX, Color color) {
-    final bouncingRectangle = CircleShape()..radius = BALL_RADIUS / PPM;
+    final bouncingRectangle = CircleShape()..radius = ballRadius / ppm;
 
     final activeFixtureDef = FixtureDef(bouncingRectangle)
       ..density = 4
@@ -188,8 +188,8 @@ class DrumPhysic {
 
     final activeBodyDef = BodyDef();
     activeBodyDef.position = Vector2(
-      ((origin.dx + offsetX) / PPM),
-      (origin.dy - (radius! / 2) - 10) / PPM,
+      ((origin.dx + offsetX) / ppm),
+      (origin.dy - (radius! / 2) - 10) / ppm,
     );
     activeBodyDef.type = BodyType.dynamic;
     activeBodyDef.bullet = true;

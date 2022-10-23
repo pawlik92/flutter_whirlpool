@@ -39,7 +39,7 @@ class NeumorphicContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BorderRadius deafultRadius =
-        BorderRadius.circular(NEUMORPHIC_DEFAULT_RADIUS);
+        BorderRadius.circular(neumorphicDefaultRadius);
     InnerShadowDecoration defaultForegroundDecoration = InnerShadowDecoration(
       colors: pressed == true
           ? [

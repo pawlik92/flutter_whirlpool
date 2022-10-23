@@ -6,18 +6,20 @@ import 'package:flutter_whirlpool/view_models/theme_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SettingsBottomSheet extends StatefulWidget {
+  const SettingsBottomSheet({super.key});
+
   @override
-  _SettingsBottomSheetState createState() => _SettingsBottomSheetState();
+  SettingsBottomSheetState createState() => SettingsBottomSheetState();
 }
 
-class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
+class SettingsBottomSheetState extends State<SettingsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 120,
       decoration: BoxDecoration(
         color: CustomColors.primaryColor,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(45),
           topRight: Radius.circular(45),
         ),
@@ -43,7 +45,7 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
               );
             },
           ),
-          SizedBox(width: 50),
+          const SizedBox(width: 50),
           Consumer<SettingsViewModel>(builder: (context, viewModel, _) {
             return NeumorphicIconButton(
               icon: Icon(

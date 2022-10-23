@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_whirlpool/models/mode_item_model.dart';
 import 'package:flutter_whirlpool/screens/main/mode_tile.dart';
@@ -13,7 +15,7 @@ import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
   static const margin = EdgeInsets.only(
-    left: GLOBAL_EDGE_MARGIN_VALUE,
+    left: globalEdgeMarginValue,
   );
 
   const MainScreen({Key? key}) : super(key: key);
@@ -26,13 +28,13 @@ class MainScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: CustomColors.primaryColor,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100),
+            preferredSize: const Size.fromHeight(100),
             child: SafeArea(
               child: TopBar(),
             ),
           ),
           drawer: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(45),
               bottomRight: Radius.circular(45),
             ),
@@ -42,57 +44,55 @@ class MainScreen extends StatelessWidget {
           ),
           drawerScrimColor: Colors.black.withAlpha(50),
           body: SingleChildScrollView(
-            child: Container(
-              child: Stack(
-                children: [
-                  Positioned(
-                    right: 0,
-                    child: Transform.translate(
-                      offset: Offset(100, 120),
-                      child: WashingMachineCase(
-                        width: 380,
-                        height: 380,
-                      ),
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 0,
+                  child: Transform.translate(
+                    offset: const Offset(100, 120),
+                    child: WashingMachineCase(
+                      width: 380,
+                      height: 380,
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 25),
-                      Padding(
-                        padding: margin,
-                        child: Text(
-                          'Smart Washing',
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: CustomColors.primaryTextColor,
-                            fontWeight: FontWeight.w800,
-                          ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 25),
+                    Padding(
+                      padding: margin,
+                      child: Text(
+                        'Smart Washing',
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: CustomColors.primaryTextColor,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
-                      SizedBox(height: 2),
-                      Padding(
-                        padding: margin,
-                        child: Text(
-                          'Machine',
-                          style: TextStyle(
-                            fontSize: 26,
-                            color: CustomColors.primaryTextColor,
-                            fontWeight: FontWeight.w400,
-                          ),
+                    ),
+                    const SizedBox(height: 2),
+                    Padding(
+                      padding: margin,
+                      child: Text(
+                        'Machine',
+                        style: TextStyle(
+                          fontSize: 26,
+                          color: CustomColors.primaryTextColor,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      SizedBox(height: 70),
-                      Padding(
-                        padding: margin,
-                        child: _FunctionButtonsList(),
-                      ),
-                      SizedBox(height: 60),
-                      _ModesList(),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(height: 70),
+                    Padding(
+                      padding: margin,
+                      child: _FunctionButtonsList(),
+                    ),
+                    const SizedBox(height: 60),
+                    _ModesList(),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -106,7 +106,7 @@ class _FunctionButtonsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var margin = EdgeInsets.only(bottom: 28);
+    var margin = const EdgeInsets.only(bottom: 28);
     return Consumer<MainViewModel>(
       builder: (context, viewModel, _) {
         return Column(
@@ -176,7 +176,7 @@ class _IndicatorState extends State<_Indicator>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 700),
       vsync: this,
     );
 
@@ -218,19 +218,19 @@ class _IndicatorState extends State<_Indicator>
     return Container(
       width: 28,
       height: 28,
-      padding: EdgeInsets.all(8.5),
+      padding: const EdgeInsets.all(8.5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: CustomColors.indicatorBackground,
         boxShadow: [
           BoxShadow(
             blurRadius: 10,
-            offset: -Offset(6, 6),
+            offset: -const Offset(6, 6),
             color: CustomColors.containerShadowTop,
           ),
           BoxShadow(
             blurRadius: 10,
-            offset: Offset(6, 6),
+            offset: const Offset(6, 6),
             color: CustomColors.containerShadowBottom,
           ),
         ],
@@ -256,7 +256,7 @@ class _ModesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 205,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,7 +272,7 @@ class _ModesList extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Flexible(
             child: Consumer<MainViewModel>(
               builder: (context, viewModel, _) {

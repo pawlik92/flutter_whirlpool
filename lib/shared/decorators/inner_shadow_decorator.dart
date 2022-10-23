@@ -37,16 +37,18 @@ class InnerShadowDecoration extends Decoration {
   @override
   InnerShadowDecoration? lerpFrom(Decoration? a, double t) {
     if (a == null) return scale(t);
-    if (a is InnerShadowDecoration)
+    if (a is InnerShadowDecoration) {
       return InnerShadowDecoration.lerp(a, this, t);
+    }
     return super.lerpFrom(a, t) as InnerShadowDecoration?;
   }
 
   @override
   InnerShadowDecoration? lerpTo(Decoration? b, double t) {
     if (b == null) return scale(1.0 - t);
-    if (b is InnerShadowDecoration)
+    if (b is InnerShadowDecoration) {
       return InnerShadowDecoration.lerp(this, b, t);
+    }
     return super.lerpTo(b, t) as InnerShadowDecoration?;
   }
 
@@ -112,7 +114,7 @@ class _InnerShadowDecorationPainter extends BoxPainter {
     }
 
     // based on https://gist.github.com/pskink/da43c327b75eec05d903fa1b4d0c4d3e#file-decorations-dart-L97
-    final depression = 12.0;
+    const depression = 12.0;
     final delta = 10 / rect.longestSide;
     final stops = [0.5 - delta, 0.5 + delta];
 
@@ -121,7 +123,7 @@ class _InnerShadowDecorationPainter extends BoxPainter {
       ..addRect(rect.inflate(depression * 2))
       ..addPath(clipPath, Offset.zero);
     final paint = Paint()
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, depression);
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, depression);
     final clipSize = rect.size.aspectRatio > 1
         ? Size(rect.width, rect.height / 2)
         : Size(rect.width / 2, rect.height);
@@ -133,7 +135,7 @@ class _InnerShadowDecorationPainter extends BoxPainter {
       final shaderRect =
           alignment.inscribe(Size.square(rect.longestSide), rect);
       paint
-        ..shader = ui.Gradient.linear(
+        .shader = ui.Gradient.linear(
           shaderRect.topLeft,
           shaderRect.bottomRight,
           _decoration.colors,

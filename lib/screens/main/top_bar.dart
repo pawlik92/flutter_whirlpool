@@ -11,8 +11,8 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(
-          GLOBAL_EDGE_MARGIN_VALUE, DRAWER_BUTTON_MARGIN_TOP, 18, 10),
+      margin: const EdgeInsets.fromLTRB(
+          globalEdgeMarginValue, drawerButtonMarginTop, 18, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,10 +27,11 @@ class TopBar extends StatelessWidget {
                   context: context,
                   backgroundColor: Colors.transparent,
                   builder: (BuildContext context) {
-                    return SettingsBottomSheet();
+                    return const SettingsBottomSheet();
                   });
             },
           ),
+          // ignore: prefer_const_constructors
           TimerPanel()
         ],
       ),

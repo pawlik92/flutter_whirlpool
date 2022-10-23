@@ -6,13 +6,13 @@ import 'package:flutter_whirlpool/view_models/timer_view_model.dart';
 import 'package:provider/provider.dart';
 
 class TimerPanel extends StatefulWidget {
-  TimerPanel({Key? key}) : super(key: key);
+  const TimerPanel({Key? key}) : super(key: key);
 
   @override
-  _TimerPanelState createState() => _TimerPanelState();
+  TimerPanelState createState() => TimerPanelState();
 }
 
-class _TimerPanelState extends State<TimerPanel> {
+class TimerPanelState extends State<TimerPanel> {
   @override
   Widget build(BuildContext context) {
     return NeumorphicContainer(

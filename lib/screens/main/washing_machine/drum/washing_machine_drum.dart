@@ -11,26 +11,26 @@ import 'package:flutter_whirlpool/shared/colors.dart';
 import 'package:flutter_whirlpool/shared/utils.dart';
 
 class WashingMachineDrum extends LeafRenderObjectWidget {
-  WashingMachineDrum(this.controller, {Key? key}) : super(key: key);
+  const WashingMachineDrum(this.controller, {Key? key}) : super(key: key);
 
   final WashingMachineController? controller;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _WhirlpoolRenderObject()..controller = controller;
+    return WhirlpoolRenderObject()..controller = controller;
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant _WhirlpoolRenderObject renderObject) {
+      BuildContext context, covariant WhirlpoolRenderObject renderObject) {
     if (renderObject.controller != controller) {
       renderObject.controller = controller;
     }
   }
 }
 
-class _WhirlpoolRenderObject extends RenderBox {
-  DrumPhysicRenderer _physicRenderer = DrumPhysicRenderer(ppm: DrumPhysic.PPM);
+class WhirlpoolRenderObject extends RenderBox {
+  final DrumPhysicRenderer _physicRenderer = DrumPhysicRenderer(ppm: DrumPhysic.ppm);
 
   WashingMachineController? get controller => _controller;
 
@@ -47,7 +47,7 @@ class _WhirlpoolRenderObject extends RenderBox {
     markNeedsPaint();
     markNeedsLayout();
 
-    SchedulerBinding.instance!.scheduleFrameCallback(frame);
+    SchedulerBinding.instance.scheduleFrameCallback(frame);
   }
 
   @override
@@ -77,7 +77,7 @@ class _WhirlpoolRenderObject extends RenderBox {
 
     if (_lastTimeStamp == 0) {
       _lastTimeStamp = t;
-      SchedulerBinding.instance!.scheduleFrameCallback(frame);
+      SchedulerBinding.instance.scheduleFrameCallback(frame);
       return;
     }
 
@@ -86,14 +86,14 @@ class _WhirlpoolRenderObject extends RenderBox {
 
     controller?.step(elapsed);
     controller?.redraw();
-    SchedulerBinding.instance!.scheduleFrameCallback(frame);
+    SchedulerBinding.instance.scheduleFrameCallback(frame);
   }
 
   _drawWhirlpool(PaintingContext context, Offset offset) {
     if (controller!.devMode != true) {
       context.pushLayer(
           ColorFilterLayer(
-            colorFilter: ColorFilter.matrix(
+            colorFilter: const ColorFilter.matrix(
               [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 20, -1200],
             ),
           ),
@@ -121,9 +121,9 @@ class _WhirlpoolRenderObject extends RenderBox {
     canvas.save();
     canvas.clipPath(Path()..addOval(rect));
 
-    controller!.physic.balls.forEach((body) {
+    for (var body in controller!.physic.balls) {
       _physicRenderer.renderBody(canvas, body);
-    });
+    }
     canvas.restore();
   }
 
@@ -170,7 +170,7 @@ class _WhirlpoolRenderObject extends RenderBox {
       Paint()
         ..shader = RadialGradient(
           colors: CustomColors.drumInnerShadowColors,
-          stops: [
+          stops: const [
             0.85,
             1,
           ],

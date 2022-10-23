@@ -27,11 +27,11 @@ class ModeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
-      onTap: this.onTap,
+      onTap: onTap,
       width: 120,
       disabled: disabled,
       margin: const EdgeInsets.only(
-        left: GLOBAL_EDGE_MARGIN_VALUE,
+        left: globalEdgeMarginValue,
         top: 15,
         bottom: 15,
       ),
@@ -58,7 +58,7 @@ class ModeTile extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Text(
@@ -89,7 +89,7 @@ class _Indicator extends StatelessWidget {
     return Container(
       width: 18,
       height: 18,
-      padding: EdgeInsets.all(4.5),
+      padding: const EdgeInsets.all(4.5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: color.withAlpha(70),

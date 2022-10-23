@@ -2,7 +2,7 @@ import 'package:flutter_whirlpool/screens/main/washing_machine/drum/physic/drum_
 import 'package:flutter_whirlpool/view_models/service_locator.dart';
 import 'package:flutter_whirlpool/view_models/settings_view_model.dart';
 
-typedef PaintCallback();
+typedef PaintCallback = Function();
 
 class WashingMachineController {
   WashingMachineController({
@@ -33,7 +33,7 @@ class WashingMachineController {
   }
 
   hasBalls() {
-    return physic.balls.length > 0;
+    return physic.balls.isNotEmpty;
   }
 
   step(double elapsed) {

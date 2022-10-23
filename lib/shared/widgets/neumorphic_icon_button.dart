@@ -22,12 +22,12 @@ class NeumorphicIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
-      child: icon,
       onTap: onTap,
       margin: margin,
       color: color,
       pressed: pressed,
       disabled: disabled,
+      child: icon,
     );
   }
 }
